@@ -25,10 +25,10 @@ int main(void) {
     pair<int, int> prev = v[0];
     for(int i = 1; i < v.size(); i++) {
         pair<int, int> cur = v[i];
-        if(cur.second < prev.second) {
+        if(cur.second <= prev.second) {
+            if(prev.second == cur.first)
+                cnt++;
             prev = cur;
-            // if(prev.second == cur.first)
-            //     cnt++;
         }
         else if(cur.first >= prev.second) {
             prev = cur;
