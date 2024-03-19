@@ -1,49 +1,39 @@
-#include<iostream>
-#include<string>
-#include<cstring>
-#include<vector>
-#include<cmath>
-#include<sstream>
-#include<limits>
-#include<algorithm>
-#include<stack>
-#include<list>
-#include<queue>
-#include<deque>
-#include<map>
-#include<set>
-#include<numeric>
-
-#define endl '\n'
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <string.h>
+#include <algorithm>
+#include <climits>
 
 using namespace std;
-const int INF = 1987654321;
-const int MAX = 1000 * 1000 * 10;
-const int _MOD = 1000000007;
 
 int n;
-int dp[14];
+int cache[20];
 
-int solve(int sum) {
-    if(sum > n) return 0;
-    if(sum == n) return 1;
-    int ret = 0;
-    for(int i = 1; i <= 3; i++) {
-        ret += solve(sum + i);
-    }
-    return ret;
+int dfs(int curNum) {
+
+    if(curNum < 0) return 0;
+    else if(curNum == 0) return 1;
+
+    int &ret = cache[curNum];
+    if(ret != -1)
+        return ret;
+
+    int cnt = 0;
+    cnt += dfs(curNum - 1);
+    cnt += dfs(curNum - 2);
+    cnt += dfs(curNum - 3);
+
+    return ret = cnt;
 }
 
 int main(void) {
-    cin.tie(NULL);
-    ios_base::sync_with_stdio(false);   
-    
-    int t;
-    cin >> t;
-    for(int i = 0; i < t; i++) {
+
+    int t; cin >> t;
+    while(t--) {
+        memset(cache, -1, sizeof(cache));
         cin >> n;
-        memset(dp, -1, sizeof(dp));
-        cout << solve(0) << endl;
+        cout << dfs(n) << endl;
     }
 
     return 0;
