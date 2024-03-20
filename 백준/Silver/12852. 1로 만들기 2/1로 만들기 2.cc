@@ -24,21 +24,18 @@ int main(void) {
     for(int i = 4; i <= n; i++) {
         int mn = INT_MAX;
         if(i % 3 == 0 && mn > dp[i / 3]) {
-            dp[i] = dp[i / 3];
             trace[i] = i / 3;
             mn = dp[i / 3];
         }
         if(i % 2 == 0 && mn > dp[i / 2]) {
-            dp[i] = dp[i / 2];
             trace[i] = i / 2;
             mn = dp[i / 2];
         }
         if(mn > dp[i - 1]) {
-            dp[i] = dp[i - 1];
             trace[i] = i - 1;
             mn = dp[i - 1];
         }
-        dp[i] += 1;
+        dp[i] = mn + 1;
     }
 
     cout << dp[n] << endl;
