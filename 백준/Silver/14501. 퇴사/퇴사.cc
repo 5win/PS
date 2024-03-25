@@ -15,22 +15,18 @@ int dp[20];
 int main(void) {
 
     cin >> n;
-    for(int i = 0; i < n; i++) {
+    for(int i = 1; i <= n; i++) {
         cin >> T[i] >> P[i];
     }
 
-    for(int i = n - 1; i >= 0; i--) {
-        if(i + T[i] <= n) {
-            dp[i] = max(dp[i + T[i]] + P[i], dp[i + 1]);
+    for(int i = 1; i <= n; i++) {
+        dp[i] = max(dp[i], dp[i - 1]);
+        if(i + T[i] - 1 <= n) {
+            dp[i + T[i]] = max(dp[i + T[i]], dp[i] + P[i]);
         }
-        else
-            dp[i] = dp[i + 1];
     }
 
-    int res = 0;
-    for(int i = 0; i < n; i++)
-        res = max(res, dp[i]);
-    cout << res << endl;
+    cout << max(dp[n], dp[n + 1]) << endl;
     
     return 0;
 }
