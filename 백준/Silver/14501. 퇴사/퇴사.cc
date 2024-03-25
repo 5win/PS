@@ -10,16 +10,7 @@ using namespace std;
 
 int n;
 int T[20], P[20];
-int res;
-
-void dfs(int curIdx, int sum) {
-    
-    for(int i = curIdx + T[curIdx]; i < n; i++) {
-        if(i + T[i] - 1 < n)
-            dfs(i, sum + P[i]);
-    }
-    res = max(res, sum);
-}
+int dp[20];
 
 int main(void) {
 
@@ -27,10 +18,18 @@ int main(void) {
     for(int i = 0; i < n; i++) {
         cin >> T[i] >> P[i];
     }
-    for(int i = 0; i < n; i++) {
-        if(i + T[i] - 1 < n)
-            dfs(i, P[i]);
+
+    for(int i = n - 1; i >= 0; i--) {
+        if(i + T[i] <= n) {
+            dp[i] = max(dp[i + T[i]] + P[i], dp[i + 1]);
+        }
+        else
+            dp[i] = dp[i + 1];
     }
+
+    int res = 0;
+    for(int i = 0; i < n; i++)
+        res = max(res, dp[i]);
     cout << res << endl;
     
     return 0;
