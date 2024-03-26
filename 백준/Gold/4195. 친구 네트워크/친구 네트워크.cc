@@ -7,10 +7,11 @@
 #include <stack>
 #include <map>
 
+#define FASTIO ios::sync_with_stdio(false); cin.tie(0); cout.tie(0);
 using namespace std;
 
 int f;
-vector<int> parent(200001);
+vector<int> parent(200001), setRank(200001, 1);
 vector<int> setSize(200001, 1);
 map<string, int> m;
 
@@ -22,12 +23,14 @@ int find(int u) {
 void merge(int u, int v) {
     u = find(u); v = find(v);
     if(u == v) return;
+    if(setRank[u] > setRank[v]) swap(u, v);
     parent[u] = v;
     setSize[v] = setSize[u] + setSize[v];
+    if(setRank[u] == setRank[v]) setRank[v]++;
 }
 
 int main(void) {
-    ios::sync_with_stdio(false); cin.tie(0); cout.tie(0);
+    FASTIO;
 
     int t; cin >> t;
     while(t--) {
