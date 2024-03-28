@@ -22,7 +22,6 @@ struct SEGTREE {
         while(powered < len) {
             powered = powered << 1;
         }
-        powered = powered << 1;
 
         rangeMul.resize(powered * 2);
         init(arr, 0, len - 1, 1);
@@ -58,7 +57,6 @@ struct SEGTREE {
         return update(index, newValue, 1, 0, len - 1);
     }
 };
-
 
 
 int n, m, k;
