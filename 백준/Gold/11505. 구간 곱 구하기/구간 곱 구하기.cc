@@ -17,7 +17,14 @@ struct SEGTREE {
 
     SEGTREE(const vector<long long>& arr) {
         len = arr.size();
-        rangeMul.resize(len * 4);
+        
+        int powered = 1;
+        while(powered < len) {
+            powered = powered << 1;
+        }
+        powered = powered << 1;
+
+        rangeMul.resize(powered * 2);
         init(arr, 0, len - 1, 1);
     }
 
