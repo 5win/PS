@@ -13,7 +13,6 @@ const int INF = 1987654321;
 int n, m, k;
 int board[1001][1001];
 bool visited[1001][1001];
-queue<pair<int, int>> q;
 
 int dy[4] = {0, 1, 0, -1};
 int dx[4] = {1, 0, -1, 0};
@@ -31,9 +30,9 @@ bool inRange(int y, int x) {
 }
 
 void bfs(int y, int x, int d) {
-    // queue<pair<int, int>> q;
-    // q.push({y, x});
-    // visited[y][x] = true;
+    queue<pair<int, int>> q;
+    q.push({y, x});
+    visited[y][x] = true;
 
     while(!q.empty()) {
         pair<int, int> cur = q.front();
@@ -51,32 +50,17 @@ void bfs(int y, int x, int d) {
 
 int canBfs(int d) {
 
-    while(!q.empty()) {
-        q.pop();
-    }
-
     memset(visited, 0, sizeof(visited));
-
     for(int i = 0; i < n; i++) {
-        if(board[i][0] <= d && !visited[i][0]) {
-            q.push({i, 0});
-            visited[i][0] = true;
-        }
-            // bfs(i, 0, d);
-        if(board[i][m - 1] <= d && !visited[i][m - 1]) {
-            q.push({i, m - 1});
-            visited[i][m - 1] = true;
-        }
-            // bfs(i, m - 1, d);
+        if(board[i][0] <= d && !visited[i][0])
+            bfs(i, 0, d);
+        if(board[i][m - 1] <= d && !visited[i][m - 1])
+            bfs(i, m - 1, d);
     }
     for(int i = 0; i < m; i++) {
-        if(board[0][i] <= d && !visited[0][i]) {
-            q.push({0, i});
-            visited[0][i] = true;
-        }
-            // bfs(0, i, d);
+        if(board[0][i] <= d && !visited[0][i])
+            bfs(0, i, d);
     }
-    bfs(0, 0, d);
 
     return calcSum();
 }
@@ -106,7 +90,7 @@ int main(void) {
         }
     }
 
-    cout << binarySearch(1, 1e6) << '\n';
+    cout << binarySearch(1, 1000001) << '\n';
         
     return 0;
 }
