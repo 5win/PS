@@ -28,11 +28,11 @@ int main(void) {
     sort(arr.begin(), arr.end());
     arr.erase(unique(arr.begin(), arr.end()), arr.end());
 
-    for(int i = 0; i < arr.size(); i++)
-        m[arr[i]] = i;
     
-    for(int i = 0; i < res.size(); i++)
-        cout << m[res[i]] << ' '; 
+    for(int i = 0; i < res.size(); i++) {
+        auto it = lower_bound(arr.begin(), arr.end(), res[i]);
+        cout << it - arr.begin() << ' ';
+    }
     cout << '\n';
 
     return 0;
