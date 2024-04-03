@@ -13,24 +13,22 @@ const int INF = 1987654321;
 
 int n;
 vector<int> in, post;
+int pivotIdx[100001];
 
 void order(int inLeft, int inRight, int pLeft, int pRight) {
     
     if(inLeft > inRight || pLeft > pRight) return;
 
     int pivot = pRight;
-    int mid;
-    for(int i = inLeft; i <= inRight; i++) {
-        if(post[pivot] == in[i]) {
-            mid = i;
-            break;
-        }
-    }
+    
+    // in배열에서 특정값의 인덱스가 몇인지 저장한 배열 pivotIdx를 사용.
+    int mid = pivotIdx[post[pivot]];
+
     cout << in[mid] << ' ' ;
     int leftSize = mid - inLeft;
     int rightSize = inRight - mid;
     order(inLeft, mid - 1, pLeft, pLeft + leftSize - 1);
-    order(mid + 1, inRight, pLeft + leftSize, pRight - 1);
+    order(mid + 1, inRight, pLeft + leftSize, pLeft + leftSize + rightSize - 1);
 }
 
 int main(void) {
@@ -40,6 +38,7 @@ int main(void) {
     for(int i = 0; i < n; i++) {
         int tmp; cin >> tmp;
         in.push_back(tmp);
+        pivotIdx[tmp] = i;
     }
 
     for(int i = 0; i < n; i++) {
