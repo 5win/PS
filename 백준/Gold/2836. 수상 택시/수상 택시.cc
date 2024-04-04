@@ -17,17 +17,19 @@ vector<pair<int, int>> v;
 
 void solve() {
     long long sum = 0;
-    int cnt = 1;
-    int prev = v[0].first;
+
+    int s = v[0].first, e = v[0].second;
     for(int i = 1; i < v.size(); i++) {
         pair<int, int> cur = v[i];
-
-        if(cnt == 0)
-            prev = cur.first;
-        cnt += cur.second;
-        if(cnt == 0) 
-            sum += (cur.first - prev) * 2;
+        if(e < cur.first) {
+            sum += (e - s) * 2;
+            s = cur.first;
+            e = cur.second;
+        } else {
+            e = max(e, cur.second);
+        }
     }
+    sum += (e - s) * 2;
     sum += m;
     cout << sum << '\n';
 }
@@ -40,8 +42,7 @@ int main(void) {
     for(int i = 0; i < n; i++) {
         cin >> s >> e;
         if(e < s) {
-            v.push_back({e, 1});
-            v.push_back({s, -1}); 
+            v.push_back({e, s});
         }
     }
     sort(v.begin(), v.end());
