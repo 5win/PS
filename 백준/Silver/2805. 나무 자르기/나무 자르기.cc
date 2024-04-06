@@ -1,66 +1,52 @@
-#include<iostream>
-#include<string>
-#include<cstring>
-#include<vector>
-#include<cmath>
-#include<sstream>
-#include<limits>
-#include<algorithm>
-#include<stack>
-#include<list>
-#include<queue>
+#include <vector>
+#include <queue>
+#include <string.h>
+#include <algorithm>
+#include <iostream>
+#include <climits>
+#include <map>
 
 using namespace std;
+#define FASTIO ios::sync_with_stdio(false); cin.tie(0); cout.tie(0)
+#define LL long long
+
 const int INF = 1987654321;
-const int MAX = 101;
-const int _MOD = 1000000007;
+const int MOD = 1000000007;
 
 int n, m;
-vector<int> tree;
-vector<int> ret;
+vector<int> wood;
 
-long long cal(int mid) {
+bool solve(int h) {
     long long sum = 0;
-    for(int i = 0; i < n; i++) {
-        if(tree[i] > mid)
-            sum += (tree[i] - mid);
+    for(auto& i : wood) {
+        if(i > h)
+            sum += i - h;
     }
-    return sum;
+    return m <= sum;
 }
 
-int solve() {
+int binarySearch() {
+    int lo = 0, hi = 1e9;
 
-    int start = 0, end = tree[n - 1];
-    while(start + 1 < end) {
-        int mid = (start + end) / 2;
-
-        long long result = cal(mid);
-        if(result >= m)
-            start = mid;
+    while(lo + 1 < hi) {
+        int mid = (lo + hi) / 2;
+        if(solve(mid))
+            lo = mid;
         else
-            end = mid;
+            hi = mid;
     }
-
-    return start;
+    return lo;
 }
 
-int main(void)
-{
-    cin.tie(NULL);
-    ios_base::sync_with_stdio(false);
-    
-    
+int main(void) {
+    FASTIO;
+
     cin >> n >> m;
     for(int i = 0; i < n; i++) {
-        int temp;
-        cin >> temp;
-        tree.push_back(temp);
+        int tmp; cin >> tmp;
+        wood.push_back(tmp);
     }
-    sort(tree.begin(), tree.end());
-
-    int res = solve();
-
-    cout << res << endl;
+    cout << binarySearch() << '\n';
 
     return 0;
 }
