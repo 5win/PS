@@ -25,7 +25,7 @@ bool solve(int h) {
 }
 
 int binarySearch() {
-    long long lo = 1, hi = (long long)INT_MAX + 1;
+    long long lo = 1, hi = 2L << 30;
 
     while(lo + 1 < hi) {
         int mid = (lo + hi) / 2;
