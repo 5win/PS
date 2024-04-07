@@ -14,7 +14,7 @@ const int INF = 1987654321;
 const int MOD = 1000000007;
 
 int n, m;
-int mx;
+int maxVal;
 vector<int> req;
 
 bool decision(int up) {
@@ -29,7 +29,7 @@ bool decision(int up) {
 }
 
 int binarySearch() {
-    int lo = 1, hi = 1e5 + 1;
+    int lo = 1, hi = maxVal + 1;
 
     while(lo + 1 < hi) {
         int mid = (lo + hi) / 2;
@@ -48,14 +48,10 @@ int main(void) {
     for(int i = 0; i < n; i++) {
         int tmp; cin >> tmp;
         req.push_back(tmp);
-        mx = max(mx, tmp);
+        maxVal = max(maxVal, tmp);
     }
     cin >> m;
-    int ans = binarySearch();
-    if(ans == 1e5)
-        cout << mx << '\n';
-    else
-        cout << ans << '\n';
+    cout << binarySearch() << endl;
 
     return 0;
 }
