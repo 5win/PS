@@ -14,7 +14,7 @@ const int INF = 1987654321;
 const int MOD = 1000000007;
 
 int n, m;
-int minVal;
+int minVal = INF;
 vector<int> arr;
 
 bool decision(LL x) {
@@ -46,7 +46,7 @@ int main(void) {
     for(int i = 0; i < m; i++) {
         int tmp; cin >> tmp;
         arr.push_back(tmp);
-        minVal = max(minVal, tmp);
+        minVal = min(minVal, tmp);
     }
 
     if(n <= m) {
