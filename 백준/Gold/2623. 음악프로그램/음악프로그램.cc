@@ -32,15 +32,11 @@ bool topologySort() {
         q.pop();
 
         ans.push_back(cur);
-        indgree[cur]--;
 
         for(int i = 0; i < adj[cur].size(); i++) {
             int next = adj[cur][i];
-            indgree[next]--;
-            if(indgree[next] == 0) {
+            if(--indgree[next] == 0) {
                 q.push(next);
-            } else if(indgree[next] < 0) {
-                return false;
             }
         }
     }
