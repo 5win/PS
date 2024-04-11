@@ -19,7 +19,7 @@ int indgree[1001];
 vector<int> adj[1001];
 vector<int> ans;
 
-bool topologySort() {
+void topologySort() {
     queue<int> q;
     for(int i = 1; i <= n; i++) {
         if(indgree[i] == 0) {
@@ -40,9 +40,6 @@ bool topologySort() {
             }
         }
     }
-    for(int i = 1; i <= n; i++)
-        if(indgree[i] > 0) return false;
-    return true;
 }
 
 int main(void) {
@@ -60,7 +57,8 @@ int main(void) {
             a = b;
         }
     }
-    if(topologySort())
+    topologySort();
+    if(ans.size() == n)
         for(auto& i : ans) cout << i << '\n';
     else
         cout << "0\n"; 
