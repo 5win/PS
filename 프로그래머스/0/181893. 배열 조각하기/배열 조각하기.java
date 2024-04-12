@@ -2,20 +2,17 @@ class Solution {
     public int[] solution(int[] arr, int[] query) {
         int[] answer = {};
        	
-        answer = arr;
+        int s = 0, e = arr.length - 1;
         for(int i = 0; i < query.length; i++) {
-           	if(i % 2 == 0) {
-                arr = new int[query[i] + 1];
-                for(int j = 0; j <= query[i]; j++)
-                   	arr[j] = answer[j];
-               	answer = arr;
+            if(i % 2 == 0) {
+            	e = s + query[i]; 
             } else {
-                arr = new int[answer.length - query[i]];
-                for(int j = query[i]; j < answer.length; j++)
-                    arr[j - query[i]] = answer[j];
-               	answer = arr;
+               	s = s + query[i];
             }
         }
+        answer = new int[e - s + 1];
+        for(int i = s; i <= e; i++)
+            answer[i - s] = arr[i];
         
         return answer;
     }
