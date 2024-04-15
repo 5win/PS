@@ -16,8 +16,8 @@ const int MOD = 1000000007;
 
 int n, k;
 long long ans;
-vector<pair<int, int>> jew;
-vector<int> C;
+int C[300001];
+pair<int, int> jew[300001];
 
 void solve() {
     priority_queue<int> pq;
@@ -45,16 +45,14 @@ int main(void) {
     int m, v;
     for(int i = 0; i < n; i++) {
         cin >> m >> v;
-        jew.push_back({m, v});
+        jew[i] = {m, v};
     }
-    int c; 
     for(int i = 0; i < k; i++) {
-        cin >> c;
-        C.push_back(c);
+        cin >> C[i];
     }
 
-    sort(jew.begin(), jew.end());
-    sort(C.begin(), C.end());
+    sort(jew, jew + n);
+    sort(C, C + k);
     solve();
 
     cout << ans << '\n';
