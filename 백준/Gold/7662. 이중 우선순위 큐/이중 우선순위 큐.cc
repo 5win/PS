@@ -38,22 +38,19 @@ int main(void) {
                     while(!maxPQ.empty() && m[maxPQ.top()] == 0)
                         maxPQ.pop();
                     if(!maxPQ.empty()) {
-                        m[maxPQ.top()] = m[maxPQ.top()] - 1;
+                        m[maxPQ.top()]--;
                         maxPQ.pop();
                     }
                 } else if(input == -1) {
                     while(!minPQ.empty() && m[minPQ.top()] == 0)
                         minPQ.pop();
                     if(!minPQ.empty()) {
-                        m[minPQ.top()] = m[minPQ.top()] - 1;
+                        m[minPQ.top()]--;
                         minPQ.pop();
                     }
                 }
             } else {
-                if(m.find(input) == m.end())
-                    m[input] = 1;
-                else
-                    m[input] = m[input] + 1;
+                m[input]++;
                 minPQ.push(input);
                 maxPQ.push(input);
             }
