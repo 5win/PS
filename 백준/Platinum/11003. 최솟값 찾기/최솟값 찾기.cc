@@ -14,29 +14,21 @@ using namespace std;
 const int INF = 1987654321;
 const int MOD = 1000000007;
 
-int n, l;
-
-struct comp {
-    bool operator() (pair<int, int>& a, pair<int, int>& b) {
-        if(a.first != b.first) return a.first > b.first;
-        else return a.second > b.second;
-}
-};
-
 int main(void) {
     FASTIO;
 
+    int n, l, input;
     cin >> n >> l;
 
-    priority_queue<pair<int, int>, vector<pair<int, int>>, comp> pq;
-
-    int input, idx;
+    deque<pair<int, int>> dq;
     for(int i = 1; i <= n; i++) {
         cin >> input;
-        pq.push({input, i});
-        while(pq.top().second < i - l + 1)
-            pq.pop();
-        cout << pq.top().first << ' ';
+        while(!dq.empty() && dq.front().second < i - l + 1)
+            dq.pop_front();
+        while(!dq.empty() && dq.back().first > input)
+            dq.pop_back();
+        dq.push_back({input, i}); 
+        cout << dq.front().first << ' ';
     }
 
     return 0;
