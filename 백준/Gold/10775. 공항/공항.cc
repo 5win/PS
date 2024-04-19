@@ -41,10 +41,11 @@ int main(void) {
         if(finish) continue;
 
         int gate = find(plane);
-        if(gate == 0) {
-            finish = true;
-            continue;
-        }
+        if(gate == 0) break;
+        // if(gate == 0) {
+        //     finish = true;
+        //     continue;
+        // }
         merge(gate, gate - 1);
         ans++;
     }
