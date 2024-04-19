@@ -48,8 +48,9 @@ int main(void) {
 
     int ans = 0;
     for(int i = 0; i < lec.size(); i++) {
-        if(!find(lec[i].second)) continue;
-        merge(find(lec[i].second), find(lec[i].second) - 1);
+        int root = find(lec[i].second);
+        if(root == 0) continue;
+        merge(root, root - 1);
         ans += lec[i].first;
     }
     cout << ans << '\n';
