@@ -17,22 +17,16 @@ const int MOD = 1000000007;
 string s;
 map<string, bool> m;
 
-void dfs(int cur, string& sub) {
-    if(cur == s.size()) return;
-
-    sub.push_back(s[cur]);
-    m[sub] = true;
-    dfs(cur + 1, sub);
-    sub.pop_back();
-}
-
 int main(void) {
     FASTIO;
 
     cin >> s;
-    string subString;
-    for(int i = 0; i < s.size(); i++)
-        dfs(i, subString);
+
+    for(int i = 0; i < s.size(); i++) {
+        for(int j = i; j < s.size(); j++) {
+            m[s.substr(i, j - i + 1)] = true;
+        }
+    }
     cout << m.size() << '\n';
     
     return 0;
