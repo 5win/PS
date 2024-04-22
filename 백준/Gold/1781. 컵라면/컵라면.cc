@@ -15,8 +15,19 @@ const int INF = 1987654321;
 const int MOD = 1000000007;
 
 int n;
-priority_queue<int> pq;
-vector<int> cup[200001];
+int parent[200001];
+pair<int, int> cup[200001];
+
+int find(int u) {
+    if(u == parent[u]) return u;
+    return parent[u] = find(parent[u]);
+}
+
+void merge(int u, int v) {
+    u = find(u); v = find(v);
+    if(u == v) return;
+    parent[u] = v;
+}
 
 
 int main(void) {
@@ -26,18 +37,18 @@ int main(void) {
     int d, v, maxD = 0;
     for(int i = 0; i < n; i++) {
         cin >> d >> v;
-        cup[d].push_back(v);
-        maxD = max(maxD, d);
+        cup[i] = {v, d};
     }
+    for(int i = 0; i < 200001; i++)
+        parent[i] = i;
+    sort(cup, cup + n);
 
     int ans = 0;
-    for(int i = maxD; i > 0; i--) {
-        for(int j = 0; j < cup[i].size(); j++)
-            pq.push(cup[i][j]); 
-        if(!pq.empty()) {
-            ans += pq.top();
-            pq.pop();
-        }
+    for(int i = n - 1; i >= 0; i--) {
+        int nextDate = find(cup[i].second);
+        if(nextDate == 0) continue;
+        ans += cup[i].first;
+        merge(nextDate, nextDate - 1);
     }
     cout << ans << '\n';
     
