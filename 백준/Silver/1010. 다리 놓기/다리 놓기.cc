@@ -14,38 +14,27 @@ using namespace std;
 const int INF = 1987654321;
 const int MOD = 1000000007;
 
-int n, m, ans;
-int cache[31][31];
-
-int dfs(int cur, int cnt) {
-
-    int& ret = cache[cur][cnt];
-    if(ret != -1)
-        return ret;
-
-    if(cnt == n) {
-        return 1;
-    }
-
-    int sum = 0;
-    for(int i = cur + 1; i < m; i++) {
-        sum += dfs(i, cnt + 1);
-    }
-    return ret = sum;
-}
+int n, m;
+int dp[31][31];
 
 int main(void) {
     FASTIO;
 
+    int w = 30, e = 30;
+    for(int i = 1; i <= e; i++) {
+        dp[1][i] = i;
+        dp[i][i] = 1;
+    }
+    for(int i = 2; i <= w; i++) {
+        for(int j = 2; j <= e; j++) {
+            dp[i][j] = dp[i - 1][j - 1] + dp[i][j - 1];
+        }
+    }
+
     int t; cin >> t;
     while(t--) {
-        memset(cache, -1, sizeof(cache));
-        ans = 0;
         cin >> n >> m;
-        int ans = 0;
-        for(int i = 0; i < m; i++)
-            ans += dfs(i, 1);
-        cout << ans << '\n';
+        cout << dp[n][m] << '\n';
     }
     
     return 0;
