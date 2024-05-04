@@ -16,34 +16,24 @@ const int INF = 1987654321;
 const int MOD = 1000000007;
 
 int n;
-vector<int> arr;
 stack<int> st;
 
 int main(void) {
     FASTIO;
 
     cin >> n;
-    for(int i = 0; i < n; i++) {
-        int tmp; cin >> tmp;
-        arr.push_back(tmp);
-    }
-
     int num = 1;
     for(int i = 0; i < n; i++) {
+        int input; cin >> input;
+        if(input == num) {
+            num++;
+        } else {
+            st.push(input);
+        }
         while(!st.empty() && st.top() == num) {
             st.pop();
             num++;
         }
-        if(arr[i] == num) {
-            num++;
-        } else {
-            st.push(arr[i]);
-        }
-    }
-
-    while(!st.empty() && st.top() == num) {
-        st.pop();
-        num++;
     }
 
     if(num == n + 1) {
