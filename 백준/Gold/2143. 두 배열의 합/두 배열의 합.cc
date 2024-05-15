@@ -18,18 +18,7 @@ const int MOD = 1000000007;
 
 int t, n, m;
 int arr1[1001], arr2[1001];
-int psum1[1001], psum2[1001];
-
-map<int, int> pmap;
-
-void prefixSum() {
-    for(int i = 1; i <= n; i++) {
-        psum1[i] = psum1[i - 1] + arr1[i];
-    }
-    for(int i = 1; i <= m; i++) {
-        psum2[i] = psum2[i - 1] + arr2[i];
-    }
-}
+vector<int> psum1, psum2;
 
 int main(void) {
     FASTIO;
@@ -44,19 +33,31 @@ int main(void) {
         cin >> arr2[i];
     }
 
-    prefixSum();
-
     for(int i = 1; i <= n; i++) {
-        for(int j = i; j <= n; j++) {
-            pmap[t - (psum1[j] - psum1[i - 1])]++;
+        int sum = arr1[i];
+        psum1.push_back(sum);
+        for(int j = i + 1; j <= n; j++) {
+            sum += arr1[j];
+            psum1.push_back(sum);
+        }
+    }
+    for(int i = 1; i <= m; i++) {
+        int sum = arr2[i];
+        psum2.push_back(sum);
+        for(int j = i + 1; j <= m; j++) {
+            sum += arr2[j];
+            psum2.push_back(sum);
         }
     }
 
+    sort(psum1.begin(), psum1.end());
+
     long long cnt = 0;
-    for(int i = 1; i <= m; i++) {
-        for(int j = i; j <= m; j++) {
-            cnt += pmap[psum2[j] - psum2[i - 1]];
-        }
+    for(int i = 0; i < psum2.size(); i++) {
+        int target = t - psum2[i];
+        int lo = lower_bound(psum1.begin(), psum1.end(), target) - psum1.begin();
+        int hi = upper_bound(psum1.begin(), psum1.end(), target) - psum1.begin();
+        cnt += hi - lo;
     }
     cout << cnt << '\n';
 
