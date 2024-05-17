@@ -33,19 +33,19 @@ void bfs() {
     for(int i = 0; i < n; i++) {
         for(int j = 0; j < n; j++) {
             if(board[i][j] == '1') {
-                int cnt = 1;
+                int cnt = 0;
                 board[i][j] = '0';
                 q.push({i, j});
                 while(!q.empty()) {
                     pair<int, int> cur = q.front();
                     q.pop();
+                    cnt++;
                     
                     int y = cur.first, x = cur.second;
                     for(int dir = 0; dir < 4; dir++) {
                         int ny = y + dy[dir], nx = x + dx[dir];
                         if(!inRange(ny, nx) || board[ny][nx] == '0') continue;
                         board[ny][nx] = '0';
-                        cnt++;
                         q.push({ny, nx});
                     }
                 }
