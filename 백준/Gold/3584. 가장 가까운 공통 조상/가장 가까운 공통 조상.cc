@@ -34,14 +34,14 @@ int lca(int u, int v) {
     return u;
 }
 
-void setLevel(int node) {
-    int cnt = 0;
-    int cur = node;
-    while(parent[cur]) {
-        cur = parent[cur];
-        cnt++;
+void setTree(int node, int pnode) {
+    parent[node] = pnode;
+    level[node] = level[pnode] + 1;
+
+    for(auto& next : adj[node]) {
+        if(pnode == next) continue;
+        setTree(next, node);
     }
-    level[node] = cnt;
 }
 
 int main(void) {
@@ -50,21 +50,27 @@ int main(void) {
     int t; cin >> t;
     while(t--) {
         cin >> n;
-        for(int i = 0; i <= n; i++) adj[i].clear();
-        memset(parent, 0, sizeof(parent));
+        for(int i = 0; i <= n; i++) {
+            adj[i].clear();
+            parent[i] = i;
+        }
         memset(level, 0, sizeof(level));
 
         int u, v;
         for(int i = 0; i < n - 1; i++) {
             cin >> u >> v;
-            parent[v] = u;
+            parent[v] = u;        // parent
+            adj[u].push_back(v);  // dfs를 위한 간선
         }
         for(int i = 1; i <= n; i++) {
-            setLevel(i);
+            if(parent[i] == i) {
+                setTree(i, i);
+            }
         }
         cin >> u >> v;
         cout << lca(u, v) << '\n';
     }
+
 
     return 0;
 }
