@@ -17,8 +17,8 @@ const int INF = 1987654321;
 const int MOD = 1000000007;
 
 int n, m;
-int whoKnow[51];
 int parent[51];
+int whoKnow[51];
 
 int find(int u) {
     if(u == parent[u]) return u;
@@ -38,15 +38,17 @@ int main(void) {
     for(int i = 0; i <= n; i++) parent[i] = i;
 
     int knowCnt; cin >> knowCnt;
-    for(int i = 0; i < knowCnt; i++)
+    for(int i = 0; i < knowCnt; i++) {
         cin >> whoKnow[i];
-    for(int i = 1; i < knowCnt; i++)
+    }
+    for(int i = 1; i < knowCnt; i++) {
         merge(whoKnow[i - 1], whoKnow[i]);
+    }
 
     vector<vector<int>> party;
     for(int i = 0; i < m; i++) {
-        int partyCnt; cin >> partyCnt;
         vector<int> people;
+        int partyCnt; cin >> partyCnt;
         while(partyCnt--) {
             int tmp; cin >> tmp;
             people.push_back(tmp);
@@ -65,8 +67,7 @@ int main(void) {
         for(auto& p : party) {
             int cnt = 0;
             for(auto& person: p) {
-                if(find(person) != knowPerson)
-                    cnt++;
+                if(find(person) != knowPerson) cnt++;
             }
             if(cnt == p.size()) res++;
         }
