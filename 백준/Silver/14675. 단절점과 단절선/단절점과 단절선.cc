@@ -17,7 +17,7 @@ const int INF = 1987654321;
 const int MOD = 1000000007;
 
 int n, q;
-vector<int> adj[100001];
+int degree[100001];
 
 int main(void) {
     FASTIO;
@@ -26,8 +26,8 @@ int main(void) {
     for(int i = 0; i < n - 1; i++) {
         int a, b;
         cin >> a >> b;
-        adj[a].push_back(b);
-        adj[b].push_back(a);
+        degree[a]++;
+        degree[b]++;
     }
 
     cin >> q;
@@ -35,8 +35,8 @@ int main(void) {
         int t, k;
         cin >> t >> k;
         if(t == 1) {
-            if(adj[k].size() > 1)   cout << "yes\n";
-            else                    cout << "no\n";
+            if(degree[k] > 1)   cout << "yes\n";
+            else                cout << "no\n";
         } else {
             cout << "yes\n";
         }
