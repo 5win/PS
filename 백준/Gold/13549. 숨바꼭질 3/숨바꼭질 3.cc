@@ -16,9 +16,9 @@ using namespace std;
 // const int INF = 1987654321;
 const int INF = 1e9;
 const int MOD = 1000000007;
+const int MAX_V = 100001;
 
 int n, k;
-vector<pair<int, int>> adj[100001];
 vector<int> dist(100001, INF);
 
 void dijkstra() {
@@ -31,13 +31,18 @@ void dijkstra() {
         int cost = pq.top().first;
         pq.pop();
         if(dist[here] < cost) continue;
-        for(int i = 0; i < adj[here].size(); i++) {
-            int next = adj[here][i].first;
-            int nextDist = cost + adj[here][i].second;
-            if(nextDist < dist[next]) {
-                dist[next] = nextDist;
-                pq.push({nextDist, next});
-            }
+
+        if(here + 1 < MAX_V && dist[here + 1] > cost + 1) {
+            dist[here + 1] = cost + 1;
+            pq.push({cost + 1, here + 1});
+        }
+        if(0 <= here - 1 && dist[here - 1] > cost + 1) {
+            dist[here - 1] = cost + 1;
+            pq.push({cost + 1, here - 1}); 
+        }
+        if(here * 2 < MAX_V && dist[here * 2] > cost) {
+            dist[here * 2] = cost;
+            pq.push({cost, here * 2});
         }
     }
 }
@@ -46,14 +51,6 @@ int main(void) {
     FASTIO;
 
     cin >> n >> k;
-    for(int i = 0; i <= 100000; i++) {
-        if(i - 1 >= 0)
-            adj[i].push_back({i - 1, 1});
-        if(i + 1 <= 100000)
-            adj[i].push_back({i + 1, 1});
-        if(i * 2 <= 100000)
-            adj[i].push_back({i * 2, 0});
-    }
     dijkstra();
     cout << dist[k] << '\n';
 
