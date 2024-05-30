@@ -76,19 +76,18 @@ int main(void) {
         // s -> g direct h -> dest
         vector<int> resDist(MAX_V);
         int distSGH = distS[g] + distGH;
-        for(int i = 1; i <= n; i++) {
+        for(const auto& i : dst) {
             resDist[i] = distSGH + distH[i];
         }
 
         // s -> h direct g -> dest
         int distSHG = distS[h] + distGH;
-        for(int i = 1; i <= n; i++) {
+        for(const auto& i : dst) {
             resDist[i] = min(resDist[i], distSHG + distG[i]);
         }
 
         vector<int> res;
         for(const auto& i : dst) {
-            if(resDist[i] >= INF) continue;
             if(distS[i] == resDist[i])
                 res.push_back(i); 
         }
