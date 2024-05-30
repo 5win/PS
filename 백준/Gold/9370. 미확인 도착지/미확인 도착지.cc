@@ -86,14 +86,11 @@ int main(void) {
             resDist[i] = min(resDist[i], distSHG + distG[i]);
         }
 
-        vector<int> res;
+        sort(dst.begin(), dst.end());
         for(const auto& i : dst) {
-            if(distS[i] == resDist[i])
-                res.push_back(i); 
-        }
-        sort(res.begin(), res.end());
-        for(const auto& i : res) {
-            cout << i << ' ';
+            if(distS[i] == resDist[i]) {
+                cout << i << ' ';
+            }
         }
         cout << '\n';
     }
