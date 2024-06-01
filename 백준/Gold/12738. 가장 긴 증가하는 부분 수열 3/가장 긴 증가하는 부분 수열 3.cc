@@ -20,7 +20,7 @@ const int MOD = 1000000007;
 const int MAX = 1000001;
 
 int n;
-int arr[MAX], dp[MAX];
+int arr[MAX];
 vector<int> LIS;
 
 int binarySearch(int lo, int hi, int target) {
@@ -41,7 +41,6 @@ int main(void) {
     cin >> n;
     for(int i = 1; i <= n; i++) {
         cin >> arr[i];
-        dp[i] = 1;
     }
 
     LIS.push_back(arr[1]);
