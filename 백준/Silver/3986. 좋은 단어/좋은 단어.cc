@@ -24,17 +24,8 @@ bool isGood(string s) {
     stack<char> st;
 
     for(const auto& c : s) {
-        if(c == 'A') {
-            if(!st.empty() && st.top() == 'A')
-                st.pop();
-            else 
-                st.push('A');
-        } else {
-            if(!st.empty() && st.top() == 'B')
-                st.pop();
-            else
-                st.push('B');
-        }
+        if(!st.empty() && st.top() == c) st.pop();
+        else st.push(c);
     }
     return st.empty();
 }
