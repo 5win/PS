@@ -42,23 +42,21 @@ int main(void) {
     int cnt = dp[s1.size()][s2.size()];
     cout << cnt << '\n';
 
-    if(cnt == 0) {
-        return 0;
+    stack<char> st;
+    int r = s1.size(), c = s2.size();
+    while(cnt != 0) {
+        int cur = dp[r][c];
+        if(dp[r - 1][c] == cur) {
+            r--; continue;
+        } else if(dp[r][c - 1] == cur) {
+            c--; continue;
+        } else {
+            st.push(s1[r - 1]);
+            r--; c--;
+            cnt--;
+        }
     }
 
-    stack<char> st;
-    int bound = s2.size();
-    for(int i = s1.size(); i > 0; i--) {
-        for(int j = 1; j <= bound; j++) {
-            if(trace[i][j] == cnt) {
-                cnt--;
-                bound = j - 1;
-                st.push(s1[i - 1]);
-            }
-            if(cnt == 0) break;
-        }
-        if(cnt == 0) break;
-    }
     while(!st.empty()) {
         cout << st.top();
         st.pop();
