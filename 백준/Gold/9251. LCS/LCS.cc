@@ -13,10 +13,11 @@ using namespace std;
 #define LL long long
 #define ULL unsigned long long
 
-const int INF = 1987654321;
+const int INF = 1e9;
 const int MOD = 1000000007;
+const int MAX = 1000001;
 
-int arr[1001][1001];
+int dp[1001][1001];
 
 int main(void) {
     FASTIO;
@@ -24,18 +25,16 @@ int main(void) {
     string s1, s2;
     cin >> s1 >> s2;
 
-    int res = 0;
-    for(int i = 1; i <= s1.length(); i++) {
-        for(int j = 1; j <= s2.length(); j++) {
+    for(int i = 1; i <= s1.size(); i++) {
+        for(int j = 1; j <= s2.size(); j++) {
             if(s1[i - 1] == s2[j - 1]) {
-                arr[i][j] = arr[i - 1][j - 1] + 1;
+                dp[i][j] = dp[i - 1][j - 1] + 1;
             } else {
-                arr[i][j] = max(arr[i - 1][j], arr[i][j - 1]);
+                dp[i][j] = max(dp[i - 1][j], dp[i][j - 1]);
             }
-            res = max(res, arr[i][j]);
         }
     }
-    cout << res << '\n';
+    cout << dp[s1.size()][s2.size()] << '\n';
 
     return 0;
 }
