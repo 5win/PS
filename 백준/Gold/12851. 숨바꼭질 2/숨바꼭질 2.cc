@@ -27,31 +27,14 @@ void bfs() {
     while(!q.empty()) {
         int cur = q.front();
         q.pop(); 
-        if(inRange(cur - 1)) {
-            if(visited[cur - 1] == -1) {
-                visited[cur - 1] = visited[cur] + 1;
-                q.push(cur - 1);
-                dp[cur - 1] = dp[cur];
-            } else if(visited[cur - 1] == visited[cur] + 1) {
-                dp[cur - 1] += dp[cur];
-            }
-        }
-        if(inRange(cur + 1)) {
-            if(visited[cur + 1] == -1) {
-                visited[cur + 1] = visited[cur] + 1;
-                q.push(cur + 1);
-                dp[cur + 1] = dp[cur];
-            } else if(visited[cur + 1] == visited[cur] + 1) {
-                dp[cur + 1] += dp[cur];
-            }
-        }
-        if(inRange(cur * 2)) {
-            if(visited[cur * 2] == -1) {
-                visited[cur * 2] = visited[cur] + 1;
-                q.push(cur * 2);
-                dp[cur * 2] = dp[cur];
-            } else if(visited[cur * 2] == visited[cur] + 1) {
-                dp[cur * 2] += dp[cur];
+        for(int next : {cur - 1, cur + 1, cur * 2}) {
+            if(!inRange(next)) continue;
+            if(visited[next] == -1) {
+                visited[next] = visited[cur] + 1;
+                q.push(next);
+                dp[next] = dp[cur];
+            } else if(visited[next] == visited[cur] + 1) {
+                dp[next] += dp[cur];
             }
         }
     }
