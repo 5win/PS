@@ -1,12 +1,4 @@
-#include <vector>
-#include <queue>
-#include <string.h>
-#include <algorithm>
-#include <iostream>
-#include <climits>
-#include <map>
-#include <stack>
-#include <math.h>
+#include <bits/stdc++.h>
 
 using namespace std;
 #define FASTIO ios::sync_with_stdio(false); cin.tie(0); cout.tie(0)
@@ -15,44 +7,31 @@ using namespace std;
 
 // const int INF = 1987654321;
 const int INF = 1e9;
-// const long long INF = 1e13;
 const int MOD = 1000000007;
 const int MAX = 1000001;
 
 int n;
-int arr[MAX];
-vector<int> LIS;
-
-int binarySearch(int lo, int hi, int target) {
-    while(lo < hi) {
-        int mid = (lo + hi) / 2;
-        if(LIS[mid] >= target) {
-            hi = mid;
-        } else {
-            lo = mid + 1;
-        }
-    }
-    return lo;
-}
+vector<int> dp;
+vector<LL> arr(1000001);
 
 int main(void) {
     FASTIO;
-
+    
     cin >> n;
-    for(int i = 1; i <= n; i++) {
+    for(int i = 0; i < n; i++)
         cin >> arr[i];
-    }
-
-    LIS.push_back(arr[1]);
-    for(int i = 2; i <= n; i++) {
-        if(arr[i] > LIS.back()) {
-            LIS.push_back(arr[i]);
+    
+    dp.push_back(arr[0]);
+    for(int i = 1; i < n; i++) {
+        int target = arr[i];
+        if(target > dp.back()) {
+            dp.push_back(target);
         } else {
-            int idx = binarySearch(0, LIS.size() - 1, arr[i]);
-            LIS[idx] = arr[i];
+            auto iter = lower_bound(dp.begin(), dp.end(), target);
+            dp[iter - dp.begin()] = target;
         }
     }
-    cout << LIS.size() << '\n';
+    cout << dp.size() << '\n';
 
     return 0;
 }
