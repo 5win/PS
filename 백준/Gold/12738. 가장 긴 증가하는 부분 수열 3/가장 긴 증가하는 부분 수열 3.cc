@@ -12,7 +12,7 @@ const int MAX = 1000001;
 
 int n;
 vector<int> dp;
-vector<LL> arr(1000001);
+vector<int> arr(1000001);
 
 int main(void) {
     FASTIO;
