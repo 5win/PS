@@ -21,13 +21,13 @@ int calcDist(pair<int, int> p, pair<int, int> t) {
 
 int dfs(int p1, int p2, int taskNum) {
 
-    if(taskNum > w) {
-        return 0;
-    }
-
     int &ret = dp[p1][p2];
     if(ret != -1)
         return ret;
+
+    if(taskNum > w) {
+        return ret = 0;
+    }
 
     pair<int, int> p1Loc = p1 == 0 ? make_pair(1, 1) : task[p1];
     pair<int, int> p2Loc = p2 == 0 ? make_pair(n, n) : task[p2];
@@ -47,10 +47,9 @@ void trace(int p1, int p2, int taskNum) {
     pair<int, int> p1Loc = p1 == 0 ? make_pair(1, 1) : task[p1];
     pair<int, int> p2Loc = p2 == 0 ? make_pair(n, n) : task[p2];
 
-    int dist1 = calcDist(p1Loc, task[taskNum]) + dp[taskNum][p2];
-    int dist2 = calcDist(p2Loc, task[taskNum]) + dp[p1][taskNum];
+    int dist = calcDist(p1Loc, task[taskNum]) + dp[taskNum][p2];
 
-    if(dist1 < dist2) {
+    if(dist == dp[p1][p2]) {
         cout << "1\n";
         trace(taskNum, p2, taskNum + 1);
     } else {
