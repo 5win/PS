@@ -1,12 +1,4 @@
-#include <vector>
-#include <queue>
-#include <string.h>
-#include <algorithm>
-#include <iostream>
-#include <climits>
-#include <map>
-#include <stack>
-#include <math.h>
+#include <bits/stdc++.h>
 
 using namespace std;
 #define FASTIO ios::sync_with_stdio(false); cin.tie(0); cout.tie(0)
@@ -15,72 +7,79 @@ using namespace std;
 
 // const int INF = 1987654321;
 const int INF = 1e9;
-// const long long INF = 1e13;
 const int MOD = 1000000007;
 const int MAX = 1000001;
 
 int n, w;
-int cache[1001][1001];
-vector<pair<int, int>> issue;
 
-int calcDist(int y1, int x1, int y2, int x2) {
-    return abs(y1 - y2) + abs(x1 - x2);
+int dp[1001][1001];
+pair<int, int> p1Loc, p2Loc;
+vector<pair<int, int>> task;
+
+int calcDist(pair<int, int> p, pair<int, int> t) {
+    return abs(p.first - t.first) + abs(p.second - t.second);
 }
 
-int dfs(int p1, int p2) {
-    int cur = max(p1, p2);
-    if(cur == w) {
-        return 0;
-    } 
+int dfs(int p1, int p2, int taskNum) {
 
-    pair<int, int> curIssue = issue[cur];
-    int& ret = cache[p1][p2];
+    if(taskNum > w) {
+        return 0;
+    }
+
+    int &ret = dp[p1][p2];
     if(ret != -1)
         return ret;
 
-    int mn = INF;
-    pair<int, int> here = p1 == 0 ? make_pair(1, 1) : issue[p1];
-    pair<int, int> next = issue[cur + 1];
-    mn = min(mn, dfs(cur + 1, p2) + calcDist(here.first, here.second, next.first, next.second));
-    here = p2 == 0 ? make_pair(n, n) : issue[p2];
-    mn = min(mn, dfs(p1, cur + 1) + calcDist(here.first, here.second, next.first, next.second));
+    pair<int, int> save = p1Loc;
+    int dist = calcDist(p1Loc, task[taskNum]);
+    p1Loc = task[taskNum];
+    ret = dfs(taskNum, p2, taskNum + 1) + dist;
+    p1Loc = save;
 
-    return ret = mn;
+    save = p2Loc;
+    dist = calcDist(p2Loc, task[taskNum]);
+    p2Loc = task[taskNum];
+    ret = min(ret, dfs(p1, taskNum, taskNum + 1) + dist);
+    p2Loc = save;
+
+    return ret;
 }
 
-void trace(int p1, int p2) {
-    int cur = max(p1, p2);
-    if(cur == w) return;
+void trace(int p1, int p2, int taskNum) {
+    if(taskNum > w) return;
 
-    pair<int, int> here = p1 == 0 ? make_pair(1, 1) : issue[p1];
-    pair<int, int> next = issue[cur + 1];
-    int select_p1 = cache[cur + 1][p2] + calcDist(here.first, here.second, next.first, next.second);
-    here = p2 == 0 ? make_pair(n ,n) : issue[p2];
-    int select_p2 = cache[p1][cur + 1] + calcDist(here.first, here.second, next.first, next.second);
+    int dist1 = calcDist(p1Loc, task[taskNum]) + dp[taskNum][p2];
+    int dist2 = calcDist(p2Loc, task[taskNum]) + dp[p1][taskNum];
 
-    if(select_p1 < select_p2) {
+
+
+    if(dist1 < dist2) {
+        p1Loc = task[taskNum];
         cout << "1\n";
-        trace(cur + 1, p2);
+        trace(taskNum, p2, taskNum + 1);
     } else {
+        p2Loc = task[taskNum];
         cout << "2\n";
-        trace(p1, cur + 1);
+        trace(p1, taskNum, taskNum + 1);
     }
+
 }
 
 int main(void) {
     FASTIO;
 
-    memset(cache, -1, sizeof(cache));
     cin >> n >> w;
-    issue.push_back({0, 0});
+    task.push_back({0, 0});     //dummy
     for(int i = 0; i < w; i++) {
-        int y, x; cin >> y >> x;
-        issue.push_back({y, x});
+        int a, b; cin >> a >> b;
+        task.push_back({a, b});
     }
+    memset(dp, -1, sizeof(dp));
+    p1Loc = {1, 1};
+    p2Loc = {n, n};
 
-    int res = dfs(0, 0);
-    cout << res << '\n';
-    trace(0, 0);
-
+    cout << dfs(0, 0, 1) << '\n';
+    trace(0, 0, 1);
+    
     return 0;
 }
