@@ -13,7 +13,6 @@ const int MAX = 1000001;
 int n, w;
 
 int dp[1001][1001];
-pair<int, int> p1Loc, p2Loc;
 vector<pair<int, int>> task;
 
 int calcDist(pair<int, int> p, pair<int, int> t) {
@@ -30,17 +29,14 @@ int dfs(int p1, int p2, int taskNum) {
     if(ret != -1)
         return ret;
 
-    pair<int, int> save = p1Loc;
-    int dist = calcDist(p1Loc, task[taskNum]);
-    p1Loc = task[taskNum];
-    ret = dfs(taskNum, p2, taskNum + 1) + dist;
-    p1Loc = save;
+    pair<int, int> p1Loc = p1 == 0 ? make_pair(1, 1) : task[p1];
+    pair<int, int> p2Loc = p2 == 0 ? make_pair(n, n) : task[p2];
 
-    save = p2Loc;
+    int dist = calcDist(p1Loc, task[taskNum]);
+    ret = dfs(taskNum, p2, taskNum + 1) + dist;
+
     dist = calcDist(p2Loc, task[taskNum]);
-    p2Loc = task[taskNum];
     ret = min(ret, dfs(p1, taskNum, taskNum + 1) + dist);
-    p2Loc = save;
 
     return ret;
 }
@@ -48,17 +44,16 @@ int dfs(int p1, int p2, int taskNum) {
 void trace(int p1, int p2, int taskNum) {
     if(taskNum > w) return;
 
+    pair<int, int> p1Loc = p1 == 0 ? make_pair(1, 1) : task[p1];
+    pair<int, int> p2Loc = p2 == 0 ? make_pair(n, n) : task[p2];
+
     int dist1 = calcDist(p1Loc, task[taskNum]) + dp[taskNum][p2];
     int dist2 = calcDist(p2Loc, task[taskNum]) + dp[p1][taskNum];
 
-
-
     if(dist1 < dist2) {
-        p1Loc = task[taskNum];
         cout << "1\n";
         trace(taskNum, p2, taskNum + 1);
     } else {
-        p2Loc = task[taskNum];
         cout << "2\n";
         trace(p1, taskNum, taskNum + 1);
     }
@@ -75,8 +70,6 @@ int main(void) {
         task.push_back({a, b});
     }
     memset(dp, -1, sizeof(dp));
-    p1Loc = {1, 1};
-    p2Loc = {n, n};
 
     cout << dfs(0, 0, 1) << '\n';
     trace(0, 0, 1);
