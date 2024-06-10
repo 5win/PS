@@ -1,56 +1,37 @@
-#include<iostream>
-#include<string>
-#include<cstring>
-#include<vector>
-#include<cmath>
-#include<sstream>
-#include<limits>
-#include<algorithm>
-#include<stack>
-#include<list>
-#include<queue>
-#include<map>
+#include <bits/stdc++.h>
 
 using namespace std;
-const int INF = 1987654321;
-const int MAX = 101;
-const int _MOD = 1000000007;
+#define FASTIO ios::sync_with_stdio(false); cin.tie(0); cout.tie(0)
+#define LL long long
+#define ULL unsigned long long
+
+// const int INF = 1987654321;
+const int INF = 1e9;
+const int MOD = 1000000007;
+const int MAX = 1000001;
 
 int n;
-vector<int> v;
-vector<int> ret;
+vector<int> dp;
+vector<int> arr(1000001);
 
-
-int solve() {
-    ret.push_back(-INF);
-
-    int cnt = 0;
-    for(int i = 0; i < n; i++) {
-        if(ret.back() < v[i]) {
-            ret.push_back(v[i]);
-            cnt++;
-        }
-        else {
-            vector<int>::iterator it = lower_bound(ret.begin(), ret.end(), v[i]);
-            *it = v[i];
-        }
-    }
-    return cnt;
-}
-
-int main(void)
-{
-    cin.tie(NULL);
-    ios_base::sync_with_stdio(false);
+int main(void) {
+    FASTIO;
 
     cin >> n;
-    for(int i = 0; i < n; i++) {
-        int temp;
-        cin >> temp;
-        v.push_back(temp);
+    for(int i = 0; i < n; i++) 
+        cin >> arr[i];
+
+    dp.push_back(arr[0]);
+    for(int i = 1; i < n; i++) {
+        int target = arr[i];
+        if(dp.back() < target) {
+            dp.push_back(target);
+        } else {
+            auto iter = lower_bound(dp.begin(), dp.end(), target);
+            dp[iter - dp.begin()] = target;
+        }
     }
-    cout << solve() << endl;
-    
+    cout << dp.size() << '\n';
 
     return 0;
 }
