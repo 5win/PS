@@ -11,17 +11,15 @@ const int MOD = 10007;
 const int MAX = 40001;
 
 int n;
-int dp[1001][1001];
+int dp[1001];
 
 void solve() {
-    for(int i = 0; i <= 9; i++)
-        dp[i][1] = i + 1;
-    for(int i = 0; i <= n; i++)
-        dp[0][i] = 1;
 
+    fill(dp, dp + 1001, 1);
+    
     for(int i = 1; i <= 9; i++) {
-        for(int j = 2; j <= n; j++) {
-            dp[i][j] = (dp[i - 1][j] + dp[i][j - 1]) % MOD;
+        for(int j = 1; j <= n; j++) {
+            dp[j] = (dp[j] + dp[j - 1]) % MOD;
         }
     }
 }
@@ -31,7 +29,7 @@ int main(void) {
 
     cin >> n;
     solve();
-    cout << dp[9][n] << '\n';
+    cout << dp[n] << '\n';
 
     return 0;
 }
