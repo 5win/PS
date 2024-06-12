@@ -12,18 +12,16 @@ const int MAX = 40001;
 
 int n, k;
 int coin[101];
-int dp[101][10001];
+int dp[10001];
 
 void solve() {
-    fill(dp[0], dp[0] + k + 1, INF);
+    fill(dp + 1, dp + k + 1, INF);
 
     for(int i = 1; i <= n; i++) {
         int cost = coin[i];
         for(int j = 1; j <= k; j++) {
             if(j >= cost) {
-                dp[i][j] = min(dp[i - 1][j], dp[i][j - cost] + 1);
-            } else {
-                dp[i][j] = dp[i - 1][j];
+                dp[j] = min(dp[j], dp[j - cost] + 1);
             }
         }
     }
@@ -37,10 +35,10 @@ int main(void) {
         cin >> coin[i];
     }
     solve();
-    if(dp[n][k] == INF)
+    if(dp[k] == INF)
         cout << "-1\n";
     else
-        cout << dp[n][k] << '\n';
+        cout << dp[k] << '\n';
 
     return 0;
 }
