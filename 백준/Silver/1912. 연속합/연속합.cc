@@ -1,53 +1,31 @@
-#include<iostream>
-#include<string>
-#include<cstring>
-#include<vector>
-#include<cmath>
-#include<sstream>
-#include<limits>
-#include<algorithm>
-#include<stack>
-#include<list>
+#include <bits/stdc++.h>
 
 using namespace std;
-const int INF = 1987654321;
-const int MAX = 100001;
+#define FASTIO ios::sync_with_stdio(false); cin.tie(0); cout.tie(0)
+#define LL long long
+#define ULL unsigned long long
 
-int n, k;
-string s1, s2;
-int cache[MAX];
-int arr[MAX];
+// const int INF = 1987654321;
+const int INF = 1e9;
+const int MOD = 1000000007;
+const int MAX = 40001;
 
-int solve(int start) {
-    if(start == n)
-        return 0;
+int n;
+int dp[100001];
 
-    int &ret = cache[start];
-    if(ret != -INF)
-        return ret;
-
-    int m = max(arr[start], arr[start] + solve(start + 1));
-
-    return ret = m;
-}
-
-int main(void)
-{
-    cin.tie(NULL);
-    ios_base::sync_with_stdio(false);
-
-    for(int i = 0; i < MAX; i++)
-        cache[i] = -INF;
+int main(void) {
+    FASTIO;
 
     cin >> n;
-    for(int i = 0; i < n ; i++)
-        cin >> arr[i];
-
-    int m = -INF;
-    for(int i = 0; i < n; i++) {
-        m = max(m, solve(i));
+    for(int i = 1; i <= n; i++)
+        cin >> dp[i];
+    
+    int res = -INF;
+    for(int i = 1; i <= n; i++) {
+        dp[i] = max(dp[i - 1] + dp[i], dp[i]);
+        res = max(res, dp[i]);
     }
-    cout << m << endl;
+    cout << res << '\n';
 
     return 0;
 }
