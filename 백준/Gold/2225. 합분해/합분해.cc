@@ -13,29 +13,27 @@ const int MAX = 40001;
 int n, k;
 int dp[201][40001];
 
-int dfs(int cnt, int curSum) {
-    if(cnt == k) {
-        if(curSum == n) return 1;
-        else return 0;
-    }
-    if(curSum > n) return 0;
+void solve() {
+    for(int i = 0; i <= n; i++)
+        dp[1][i] = 1;
 
-    int &ret = dp[cnt][curSum];
-    if(ret != -1) return ret;
-    
-    int sum = 0;
-    for(int i = 0; i <= n; i++) {
-        sum = (sum + dfs(cnt + 1, curSum + i)) % MOD;
-    }
-    return ret = sum;
+    for(int i = 2; i <= k; i++) {
+        for(int j = 0; j <= n; j++) {
+            for(int x = 0; x <= n; x++) {
+                if(j >= x) {
+                    dp[i][j] = (dp[i][j] + dp[i - 1][j - x]) % MOD;
+                } 
+            }
+        }
+    } 
 }
 
 int main(void) {
     FASTIO;
 
-    memset(dp, -1, sizeof(dp));
     cin >> n >> k;
-    cout << dfs(0, 0) << '\n';
+    solve();
+    cout << dp[k][n] << '\n';
 
     return 0;
 }
