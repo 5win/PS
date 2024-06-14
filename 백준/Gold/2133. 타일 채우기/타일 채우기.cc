@@ -13,28 +13,23 @@ const int MAX = 40001;
 int n;
 int dp[32];
 
-void solve() {
-    dp[0] = 1;
-    dp[1] = 0;
-    dp[2] = 3;
-    dp[3] = 0;
-    dp[4] = dp[2] * 3 + 2;
+int dfs(int here) {
+    if(here == n + 1) return 1;
+    if(here > n + 1) return 0;
 
-    for(int i = 6; i <= n; i++) {
-        if(i % 2 == 1) continue;
-        dp[i] += dp[i - 2] * 3;
-        for(int j = 4; i - j >= 0; j += 2) {
-            dp[i] += dp[i - j] * 2;
-        }
+    int sum = 0;
+    sum += dfs(here + 2) * 3;
+    for(int i = 4; here + i <= n + 1; i += 2) {
+        sum += dfs(here + i) * 2;
     }
+    return sum;
 }
 
 int main(void) {
     FASTIO;
 
     cin >> n;
-    solve();
-    cout << dp[n] << '\n';
+    cout << dfs(1) << '\n';
 
     return 0;
 }
