@@ -12,14 +12,14 @@ const int MAX = 40001;
 
 int n;
 int D[21][21];
-int dp[21][1 << 20];
+int dp[1 << 20];
 
 int dfs(int cur, int done) {
     if(cur == n) {
         return 0;
     }
 
-    int &ret = dp[cur][done];
+    int &ret = dp[done];
     if(ret != -1) return ret;
 
     int mn = INF;
