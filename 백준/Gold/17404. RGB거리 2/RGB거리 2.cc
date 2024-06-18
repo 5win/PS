@@ -12,41 +12,44 @@ const int MAX = 40001;
 
 int n;
 int cost[1001][3];
-int dp[1001][3][3];
+int dp[1001][3];
 
-int dfs(int start, int prev, int here) {
-	if(here == n) {
-		return 0;
+int solve() {
+	int ret = INF;
+
+	for(int start = 0; start < 3; start++) {
+		memset(dp, 0, sizeof(dp));
+		for(int color = 0; color < 3; color++) {
+			if(start == color)
+				dp[1][color] = cost[1][color];
+			else
+				dp[1][color] = INF;
+		}
+
+		for(int i = 2; i <= n; i++) {
+			dp[i][0] = min(dp[i - 1][1], dp[i - 1][2]) + cost[i][0];
+			dp[i][1] = min(dp[i - 1][0], dp[i - 1][2]) + cost[i][1];
+			dp[i][2] = min(dp[i - 1][0], dp[i - 1][1]) + cost[i][2];
+		}	
+
+		for(int color = 0; color < 3; color++) {
+			if(start == color) continue;
+			ret = min(ret, dp[n][color]);
+		}
 	}
-
-	int &ret = dp[here][prev][start];
-	if(ret != -1) return ret;
-
-	int mn = INF;
-	for(int i = 0; i < 3; i++) {
-		if(prev == i) continue;
-		if(here == n - 1 && start == i) continue;
-		mn = min(mn, dfs(start, i, here + 1) + cost[here][i]);
-	}
-	return ret = mn;
+	return ret;
 }
 
 int main(void) {
     FASTIO;
 
 	cin >> n;
-	for(int i = 0; i < n; i++) {
+	for(int i = 1; i <= n; i++) {
 		for(int j = 0; j < 3; j++) {
 			cin >> cost[i][j];
 		}
 	}
-
-	memset(dp, -1, sizeof(dp));
-	int res = INF;
-	for(int i = 0; i < 3; i++) {
-		res = min(res, dfs(i, i, 1) + cost[0][i]);
-	}
-	cout << res << '\n';
+	cout << solve() << '\n';
 
     return 0;
 }
