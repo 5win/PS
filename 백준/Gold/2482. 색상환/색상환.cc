@@ -16,7 +16,6 @@ int dp[1001][1001];
 void solve() {
 	for(int i = 1; i <= n; i++) {
 		dp[i][1] = i;
-		dp[i][0] = 1;
 	}
 
 	for(int i = 2; i < n; i++) {
@@ -24,7 +23,7 @@ void solve() {
 			dp[i][j] = (dp[i - 1][j] + dp[i - 2][j - 1]) % MOD;
 		}
 	}
-	for(int j = 1; j <= k; j++) {
+	for(int j = 2; j <= k; j++) {
 		dp[n][j] = (dp[n - 3][j - 1] + dp[n - 1][j]) % MOD;
 	}
 }
