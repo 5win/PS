@@ -11,22 +11,21 @@ const int MOD = 1e9 + 3;
 const int MAX = 40001;
 
 int n, k;
-int dp[1001][1001];
+int dp[1001][1001][2];
 
-int dfs(int here, int len, bool chkStart) {
+int dfs(int here, int len, int chkStart) {
 	if(len == k) {
+		if(here == n + 2 && chkStart)
+			return 0;
 		return 1;
 	}
 
-	int &ret = dp[here][len];
+	if(here > n) return 0;
+
+	int &ret = dp[here][len][chkStart];
 	if(ret != -1) return ret;
 
-	int cnt = 0;
-	for(int next = here + 2; next <= n; next++) {
-		if(chkStart && next == n) continue;
-		cnt = (cnt + dfs(next, len + 1, chkStart)) % MOD;
-	}
-	return ret = cnt;
+	return ret = (dfs(here + 1, len, chkStart) + dfs(here + 2, len + 1, chkStart)) % MOD;
 }
 
 int main(void) {
@@ -34,10 +33,7 @@ int main(void) {
 
 	cin >> n >> k;
 	memset(dp, -1, sizeof(dp));
-	int res = dfs(0, 0, false);
-	memset(dp, -1, sizeof(dp));
-	res = (res + dfs(1, 1, true)) % MOD;
-	cout << res << '\n';
+	cout << (dfs(2, 0, 0) + dfs(3, 1, 1)) % MOD << '\n';
 
     return 0;
 }
