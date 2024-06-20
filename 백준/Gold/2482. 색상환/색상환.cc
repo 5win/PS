@@ -11,29 +11,31 @@ const int MOD = 1e9 + 3;
 const int MAX = 40001;
 
 int n, k;
-int dp[1001][1001][2];
+int dp[1001][1001];
 
-int dfs(int here, int len, int chkStart) {
-	if(len == k) {
-		if(here == n + 2 && chkStart)
-			return 0;
-		return 1;
+void solve() {
+	for(int i = 0; i <= n; i++) {
+		dp[i][1] = i;
+		dp[i][0] = 1;
 	}
 
-	if(here > n) return 0;
-
-	int &ret = dp[here][len][chkStart];
-	if(ret != -1) return ret;
-
-	return ret = (dfs(here + 1, len, chkStart) + dfs(here + 2, len + 1, chkStart)) % MOD;
+	for(int i = 2; i < n; i++) {
+		for(int j = 1; j <= k; j++) {
+			dp[i][j] = (dp[i - 1][j] + dp[i - 2][j - 1]) % MOD;
+		}
+	}
+	// for(int j = 1; j <= k; j++) {
+	// 	dp[n][j] = (dp[n - 3][j - 1] + dp[n - 1][j]) % MOD;
+	// }
 }
 
 int main(void) {
     FASTIO;
 
 	cin >> n >> k;
-	memset(dp, -1, sizeof(dp));
-	cout << (dfs(2, 0, 0) + dfs(3, 1, 1)) % MOD << '\n';
+	solve();
+	// cout << dp[n][k] << '\n';
+	cout << (dp[n - 3][k - 1] + dp[n - 1][k]) % MOD << '\n';
 
     return 0;
 }
