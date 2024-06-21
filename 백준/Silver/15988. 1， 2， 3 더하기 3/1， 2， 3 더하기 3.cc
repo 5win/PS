@@ -13,28 +13,29 @@ const int MAX = 40001;
 int n;
 int dp[1000001];
 
-int dfs(int sum) {
-    if(sum == 0) return 1;
-    else if(sum < 0) return 0;
+void solve() {
+    fill(dp, dp + 1000001, 1);
 
-    int &ret = dp[sum];
-    if(ret != -1) return ret;
-
-    int cnt = 0;
     for(int i = 1; i <= 3; i++) {
-        cnt = (cnt + dfs(sum - i)) % MOD;
+        for(int j = 2; j <= 1e6; j++) {
+            int tmp = 0;
+            for(int k = 1; k <= i; k++) {
+                if(j >= k)
+                    tmp = (tmp + dp[j - k]) % MOD;
+            }
+            dp[j] = tmp;
+        }
     }
-    return ret = cnt;
 }
 
 int main(void) {
     FASTIO;
 
     int t; cin >> t;
-    memset(dp, -1, sizeof(dp));
+    solve();
     while(t--) {
         cin >> n;
-        cout << dfs(n) << '\n';
+        cout << dp[n] << '\n';
     }
 
     return 0;
