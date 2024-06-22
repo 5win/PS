@@ -11,21 +11,14 @@ const int MOD = 1e9 + 9;
 const int MAX = 40001;
 
 int n;
-int dp[1000001];
+int dp[int(1e6 + 1)];
 
 void solve() {
-    fill(dp, dp + 1000001, 1);
-
-    for(int i = 1; i <= 3; i++) {
-        for(int j = 2; j <= 1e6; j++) {
-            int tmp = 0;
-            for(int k = 1; k <= i; k++) {
-                if(j >= k)
-                    tmp = (tmp + dp[j - k]) % MOD;
-            }
-            dp[j] = tmp;
-        }
-    }
+    dp[1] = 1;
+    dp[2] = 2;
+    dp[3] = 4;
+    for(int i = 4; i <= 1e6; i++)
+        dp[i] = ((dp[i - 1] + dp[i - 2]) % MOD + dp[i - 3]) % MOD;
 }
 
 int main(void) {
