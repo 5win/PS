@@ -51,10 +51,7 @@ int main(void) {
         int idx; cin >> idx;
         vip[idx] = true;
     }
-    if(vip[1] || n == 1)
-        cout << dfs(1, 2) << '\n';
-    else 
-        cout << dfs(1, 2) + dfs(2, 2) << '\n';
+    cout << dfs(0, 1) << '\n';
 
     return 0;
 }
