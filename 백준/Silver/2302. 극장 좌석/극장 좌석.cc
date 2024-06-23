@@ -11,47 +11,39 @@ const int MOD = 1e9 + 9;
 const int MAX = 40001;
 
 int n, m;
-int dp[41][41];
+int dp[41];
 bool vip[41];
 
-int dfs(int prev, int here) {
-    if(here == n + 1) {
-        return 1;
+int solve() {
+    dp[0] = 1;
+    dp[1] = 1;
+    for(int i = 2; i <= n; i++) {
+        dp[i] = dp[i - 1] + dp[i - 2];
     }
 
-    int &ret = dp[prev][here];
-    if(~ret) return ret;
-
-    if(vip[here]) {
-        if(prev == here) return 0;
-        return ret = dfs(here, here + 1);
+    int sum = 1;
+    int s = 1;
+    for(int i = 1; i <= n; i++) {
+        if(vip[i]) {
+            sum *= dp[i - s];
+            s = i + 1;
+        }
     }
-
-    int sum = 0;
-    if(prev == here - 1) {
-        sum += dfs(here, here + 1);
-        if(here + 1 <= n)
-            sum += dfs(here + 1, here + 1);
-    } else if(prev == here - 2) {
-        sum += dfs(here, here + 1);
-        if(here + 1 <= n)
-            sum += dfs(here + 1, here + 1);
-    } else if(prev == here) {
-        sum += dfs(here - 1, here + 1);
+    if(s != n + 1) {
+        sum *= dp[n + 1 - s];
     }
-    return ret = sum;
+    return sum;
 }
 
 int main(void) {
     FASTIO;
 
-    memset(dp, -1, sizeof(dp));
     cin >> n >> m;
     for(int i = 0; i < m; i++) {
         int idx; cin >> idx;
         vip[idx] = true;
     }
-    cout << dfs(0, 1) << '\n';
+    cout << solve() << '\n';
 
     return 0;
 }
