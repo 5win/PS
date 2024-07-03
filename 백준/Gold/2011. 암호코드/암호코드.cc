@@ -13,7 +13,7 @@ const int MAX = 40001;
 string code;
 int dp[5001];
 
-int dfs(string num) {
+int dfs(string &num) {
     int len = num.size();
 
     if(len >= code.size()) {
@@ -41,7 +41,8 @@ int main(void) {
     cin >> code;
 
     memset(dp, -1, sizeof(dp));
-    cout << dfs("") << '\n';
+    string num = "";
+    cout << dfs(num) << '\n';
 
     return 0;
 }
