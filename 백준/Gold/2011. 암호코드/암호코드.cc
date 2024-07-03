@@ -11,40 +11,37 @@ const int MOD = 1e6;
 const int MAX = 40001;
 
 string code;
-int codeLen;
 int dp[5001];
 
-int dfs(string &num) {
-    int len = num.size();
+void solve() {
 
-    if(len >= codeLen) {
-        return num == code ? 1 : 0;
-    }
+	if('0' < code[0])
+		dp[0] = 1;
+	if('0' < code[1])
+		dp[1] = dp[0];
+	int num = stoi(code.substr(0, 2));
+	if(10 <= num && num <= 26) {
+		dp[1]++;
+	}
 
-    int &ret = dp[len];
-    if(ret != -1) return ret;
+	for(int i = 2; i < code.size(); i++) {
+		if('0' < code[i])
+			dp[i] = (dp[i] + dp[i - 1]) % MOD;
 
-    int sum = 0;
-    for(int i = 1; i <= 26; i++) {
-        string nextNum = num + to_string(i);
-        if(i < 10 && len + 1 <= codeLen && nextNum == code.substr(0, len + 1)) {
-            sum = (sum + dfs(nextNum)) % MOD;
-        } else if(len + 2 <= codeLen && nextNum == code.substr(0, len + 2)) {
-            sum = (sum + dfs(nextNum)) % MOD;
-        }
-    }
-    return ret = sum;
+
+		int num = stoi(code.substr(i - 1, 2));
+		if(10 <= num && num <= 26) {
+			dp[i] = (dp[i] + dp[i - 2]) % MOD;
+		}
+	}
 }
 
 int main(void) {
     FASTIO;
 
     cin >> code;
-    codeLen = code.size();
-
-    memset(dp, -1, sizeof(dp));
-    string num = "";
-    cout << dfs(num) << '\n';
+	solve();
+	cout << dp[code.size() - 1] << '\n';
 
     return 0;
 }
