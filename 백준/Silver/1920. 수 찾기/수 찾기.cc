@@ -14,12 +14,12 @@ int n, m;
 int A[100001];
 
 bool binarySearch(int x) {
-    int lo = 0, hi = n - 1;
-    while(lo < hi) {
+    int lo = 0, hi = n;
+    while(lo <= hi) {
         int mid = (lo + hi) / 2;
         if(A[mid] == x) return true;
         else if(A[mid] < x) lo = mid + 1;
-        else hi = mid - 1;
+        else hi = mid;
     }
     return false;
 }
