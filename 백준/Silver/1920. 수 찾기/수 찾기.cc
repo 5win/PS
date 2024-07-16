@@ -18,8 +18,8 @@ bool binarySearch(int x) {
     while(lo < hi) {
         int mid = (lo + hi) / 2;
         if(A[mid] == x) return true;
-        else if(A[mid] < x) hi = mid - 1;
-        else lo = mid + 1;
+        else if(A[mid] < x) lo = mid + 1;
+        else hi = mid - 1;
     }
     return false;
 }
