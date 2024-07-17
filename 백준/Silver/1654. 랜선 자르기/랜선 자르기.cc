@@ -1,38 +1,37 @@
-#include <vector>
-#include <queue>
-#include <string.h>
-#include <algorithm>
-#include <iostream>
-#include <climits>
-#include <map>
+#include <bits/stdc++.h>
 
 using namespace std;
 #define FASTIO ios::sync_with_stdio(false); cin.tie(0); cout.tie(0)
 #define LL long long
+#define ULL unsigned long long
 
-const int INF = 1987654321;
-const int MOD = 1000000007;
+// const int INF = 1987654321;
+const int INF = 1e9;
+const int MOD = 1e6;
+const int MAX = 40001;
 
-int k, n;
-vector<int> lan;
+int n, k;
+int maxLen;
+int lan[10001];
 
-bool solve(int h) {
+bool optimize(int len) {
     int cnt = 0;
-    for(auto& i : lan) {
-        cnt += i / h;
+    for(int i = 0; i < k; i++) {
+        cnt += lan[i] / len;
     }
-    return n <= cnt;
+    return cnt >= n;
 }
 
-int binarySearch() {
-    long long lo = 1, hi = 2L << 30;
+int parametric() {
+    LL lo = 1, hi = (LL)maxLen + 1;
 
     while(lo + 1 < hi) {
-        int mid = (lo + hi) / 2;
-        if(solve(mid))
+        LL mid = (lo + hi) / 2;
+        if(optimize(mid)) {
             lo = mid;
-        else
+        } else {
             hi = mid;
+        }
     }
     return lo;
 }
@@ -42,10 +41,10 @@ int main(void) {
 
     cin >> k >> n;
     for(int i = 0; i < k; i++) {
-        int tmp; cin >> tmp;
-        lan.push_back(tmp);
+        cin >> lan[i];
+        maxLen = max(maxLen, lan[i]);
     }
-    cout << binarySearch() << '\n';
-
+    cout << parametric() << '\n';
+    
     return 0;
 }
