@@ -15,9 +15,7 @@ int board[101][101];
 
 bool validate(vector<pair<int, int>>& arr) {
 	for(int i = 1; i < arr.size(); i++) {
-		if(arr[i - 1].first == arr[i].first) {
-			continue;
-		} else if(arr[i - 1].first + 1 == arr[i].first && arr[i - 1].second >= l) {
+		if(arr[i - 1].first + 1 == arr[i].first && arr[i - 1].second >= l) {
 			arr[i - 1].second -= l;
 			continue;
 		} else if(arr[i - 1].first == arr[i].first + 1 && arr[i].second >= l) {
