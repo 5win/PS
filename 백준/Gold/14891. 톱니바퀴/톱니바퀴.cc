@@ -31,15 +31,9 @@ void decideDir(int d[4], int num) {
 void rotating(int d[4]) {
 	for(int i = 0; i < 4; i++) {
 		if(d[i] == -1) {
-			char tmp = wheel[i][0];
-			for(int j = 0; j < 7; j++) 
-				wheel[i][j] = wheel[i][j + 1];
-			wheel[i][7] = tmp;
+			wheel[i] = wheel[i].substr(1, 7) + wheel[i].substr(0, 1);
 		} else if(d[i] == 1) {
-			char tmp = wheel[i][7];
-			for(int j = 7; j > 0; j--)
-				wheel[i][j] = wheel[i][j - 1];
-			wheel[i][0] = tmp;
+			wheel[i] = wheel[i].substr(7, 1) + wheel[i].substr(0, 7);
 		}
 	}
 }
