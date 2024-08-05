@@ -27,19 +27,26 @@ int calcCnt() {
 	return cnt;
 }
 
-pair<int, int> drawDragon(int y, int x, int d, int g) {
-	if(g == 0) {
-		int ny = y + dy[d], nx = x + dx[d];
-		board[y][x] = board[ny][nx] = true;
-		return {ny, nx};
-	}
+void solve(int x, int y, int d, int g) {
+	board[y][x] = true;
+	y += dy[d];
+	x += dx[d];
+	board[y][x] = true;
 
-	pair<int, int> dst = drawDragon(y, x, d, g - 1);
-	int ny = dst.first + (x - dst.second);
-	int nx = dst.second + -(y - dst.first);
-	drawDragon(ny, nx, (d - 1 + 4) % 4, g - 1);
-	return {ny, nx};
+	vector<int> route;
+	route.push_back(d);
+
+	for(int i = 1; i <= g; i++) {
+		for(int j = route.size() - 1; j >= 0; j--) {
+			int dir = (route[j] + 1) % 4;
+			y += dy[dir];
+			x += dx[dir];
+			board[y][x] = true;
+			route.push_back(dir);
+		}	
+	}
 }
+
 
 int main(void) {
     FASTIO;
@@ -48,7 +55,7 @@ int main(void) {
 	for(int i = 0; i < n; i++) {
 		int x, y, d, g;
 		cin >> x >> y >> d >> g;
-		drawDragon(y, x, d, g);
+		solve(x, y, d, g);
 	}
 	cout << calcCnt() << '\n';
 
