@@ -23,15 +23,6 @@ bool inRange(int y, int x) {
 	return 0 <= y && y < n && 0 <= x && x < n;
 }
 
-bool isFishExist() {
-	for(int i = 0; i < n; i++) {
-		for(int j = 0; j < n; j++) {
-			if(board[i][j] != 0 && board[i][j] < sharkSize) return true;
-		}
-	}
-	return false;
-}
-
 void eat(int visited[21][21], int minDist) {
 	for(int i = 0; i < n; i++) {
 		for(int j = 0; j < n; j++) {
@@ -77,7 +68,6 @@ bool bfs() {
 
 void solve() {
 	while(true) {
-		if(!isFishExist()) break;
 		if(!bfs()) break;
 		if(eatCnt == sharkSize) {
 			sharkSize++;
