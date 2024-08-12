@@ -50,12 +50,9 @@ void moveShark() {
 
 			int y = i, x = j;
 			Shark &cur = sharks[sharkNum];
-			int moveCnt = (cur.isVertical) ? cur.speed % (r * 2 - 2) : cur.speed % (c * 2 - 2);
-			// int roundCnt = (cur.isVertical) ? cur.speed / r : cur.speed / c;
 
-			// 방향 전환
-			// if(roundCnt % 2 == 1)
-			// 	cur.dir = (cur.dir % 2 == 0) ? cur.dir + 1 : cur.dir - 1;
+			// 같은 위치 같은 방향이 되는 주기로 나머지 연산
+			int moveCnt = (cur.isVertical) ? cur.speed % (r * 2 - 2) : cur.speed % (c * 2 - 2);
 
 			for(int cnt = 0; cnt < moveCnt; cnt++) {
 				int ny = y + dy[cur.dir], nx = x + dx[cur.dir];
