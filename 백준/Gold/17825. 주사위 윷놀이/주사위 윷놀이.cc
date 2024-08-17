@@ -50,8 +50,8 @@ void calcMax() {
 	res = max(res, ret);
 }
 
-void dfs(int here) {
-	if(here == 10) {
+void dfs(int cnt) {
+	if(cnt == 10) {
 		calcMax();
 		return;
 	}
@@ -69,22 +69,22 @@ void dfs(int here) {
 			next = board[next].next;
 		}
 
-		for(int j = 0; j < num[here] - 1; j++) {
+		for(int j = 0; j < num[cnt] - 1; j++) {
 			next = board[next].next;
 		}
 
 		if(next != 21 && visited[next]) continue;
 
-		int tmp = loc[i];
+		int here = loc[i];
 		loc[i] = next;
 		sum[i] += board[next].score;
-		visited[tmp] = false;
+		visited[here] = false;
 		visited[next] = true;
-		dfs(here + 1);
+		dfs(cnt + 1);
 		visited[next] = false;
-		visited[tmp] = true;
+		visited[here] = true;
 		sum[i] -= board[next].score;
-		loc[i] = tmp;
+		loc[i] = here;
 	}
 }
 
