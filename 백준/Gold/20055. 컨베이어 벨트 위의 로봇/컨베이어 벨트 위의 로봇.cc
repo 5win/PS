@@ -17,29 +17,21 @@ struct Belt {
 
 int n, k;
 Belt belt[201];
-vector<int> robotLoc;
-int deadCnt = 0;
 
 void rotate() {
 	Belt tmp = belt[2 * n - 1];
 	for(int i = 2 * n - 1; i > 0; i--)
 		belt[i] = belt[i - 1];
 	belt[0] = tmp;
-
-	for(int i = deadCnt; i < robotLoc.size(); i++) {
-		robotLoc[i] = (robotLoc[i] + 1) % (2 * n);
-	}
 }
 
 void moveRobot() {
-	for(int rNum = deadCnt; rNum < robotLoc.size(); rNum++) {
-		int cLoc = robotLoc[rNum];
-		int nLoc = (cLoc + 1) % (2 * n);
-		if(belt[nLoc].robotExist || belt[nLoc].A == 0) continue;
-		belt[cLoc].robotExist = false;
-		belt[nLoc].robotExist = true;
-		belt[nLoc].A--;
-		robotLoc[rNum] = nLoc;
+	for(int i = n - 2; i >= 0; i--) {
+		if(belt[i].robotExist && !belt[i + 1].robotExist && belt[i + 1].A > 0) {
+			belt[i].robotExist = false;
+			belt[i + 1].robotExist = true;
+			belt[i + 1].A--;
+		}
 	}
 }
 
@@ -47,16 +39,11 @@ void setRobot() {
 	if(belt[0].A > 0) {
 		belt[0].robotExist = true;
 		belt[0].A--;
-
-		robotLoc.push_back(0);
 	}
 }
 
 void getRobot() {
-	if(belt[n - 1].robotExist) {
-		belt[n - 1].robotExist = false;
-		deadCnt++;
-	}
+	belt[n - 1].robotExist = false;
 }
 
 bool isFinish() {
