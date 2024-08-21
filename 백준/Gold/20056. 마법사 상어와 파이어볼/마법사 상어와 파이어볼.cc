@@ -30,7 +30,8 @@ void move() {
 			for(int f = 0; f < cur.size(); f++) {
 				int ny = cur[f].y, nx = cur[f].x;
 				int dir = cur[f].d;
-				for(int t = 0; t < cur[f].s; t++) {
+				int goCnt = cur[f].s % n;
+				for(int t = 0; t < goCnt; t++) {
 					ny += dy[dir];
 					if(ny < 0) ny = n - 1;
 					else if(ny >= n) ny = 0;
