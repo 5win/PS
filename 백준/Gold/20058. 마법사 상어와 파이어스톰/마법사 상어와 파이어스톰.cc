@@ -90,15 +90,6 @@ void subtractIce() {
 			ice[i][j] = tmp[i][j];
 }
 
-void print() {
-	for(int i = 0; i < m; i++) {
-		for(int j = 0; j < m; j++)
-			cout << ice[i][j];
-		cout << '\n';
-	}
-		cout << '\n';
-}
-
 void solve(int l) {
 
 	int grid = (1 << l);
