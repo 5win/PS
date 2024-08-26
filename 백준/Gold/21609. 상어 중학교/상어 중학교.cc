@@ -102,7 +102,6 @@ void removeBlock(Group target) {
 void gravity() {
 	for(int j = 0; j < n; j++) {
 		int tmp[21];
-
 		for(int i = 0; i < n; i++)
 			tmp[i] = -2;
 
@@ -116,9 +115,6 @@ void gravity() {
 			} else {
 				continue;
 			}
-		}
-		while(idx >= 0) {
-			tmp[idx--] = -2;
 		}
 
 		for(int i = 0; i < n; i++)
@@ -135,15 +131,6 @@ void rotate() {
 	for(int i = 0; i < n; i++)
 		for(int j = 0; j < n; j++)
 			board[i][j] = tmp[i][j];
-}
-
-void print() {
-	for(int i = 0; i < n; i++) {
-		for(int j = 0; j < n; j++)
-			cout << board[i][j] << ' ';
-		cout << endl;
-	}
-		cout << endl;
 }
 
 void solve() {
