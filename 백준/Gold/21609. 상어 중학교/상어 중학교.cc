@@ -83,7 +83,7 @@ vector<Group> findGroup() {
 	for(int i = 0; i < n; i++) {
 		for(int j = 0; j < n; j++) {
 			memset(visited, false, sizeof(visited));
-			if(visited[i][j] || board[i][j] <= 0) continue;
+			if(board[i][j] <= 0) continue;
 			Group g = bfs(visited, i, j, false);
 			if(g.size > 1)
 				ret.push_back(g);
