@@ -1,19 +1,19 @@
+import java.util.*;
+import java.util.stream.*;
+
 class Solution {
     public int[] solution(int[] arr, int[] query) {
-        int[] answer = {};
-       	
-        int s = 0, e = arr.length - 1;
+        
+        List<Integer> answer = Arrays.stream(arr).boxed().collect(Collectors.toList());
         for(int i = 0; i < query.length; i++) {
             if(i % 2 == 0) {
-            	e = s + query[i]; 
+               	answer = new ArrayList<>(answer.subList(0, query[i] + 1));
             } else {
-               	s = s + query[i];
+               	answer = new ArrayList<>(answer.subList(query[i], answer.size()));
             }
         }
-        answer = new int[e - s + 1];
-        for(int i = s; i <= e; i++)
-            answer[i - s] = arr[i];
+        int[] ret = answer.stream().mapToInt(Integer::intValue).toArray();
         
-        return answer;
+        return ret;
     }
 }
