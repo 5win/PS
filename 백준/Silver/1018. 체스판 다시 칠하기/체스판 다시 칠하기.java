@@ -1,3 +1,4 @@
+import java.io.*;
 import java.util.*;
 import java.util.stream.IntStream;
 
@@ -35,16 +36,23 @@ public class Main {
         return ret;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
-        Scanner sc = new Scanner(System.in);
-        n = sc.nextInt();
-        m = sc.nextInt();
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        
+        String[] input = br.readLine().split(" ");
+        n = Integer.parseInt(input[0]);
+        m = Integer.parseInt(input[1]);
 
         for(int i = 0; i < n; i++) {
-            board[i] = sc.next();
+            board[i] = br.readLine();
         }
 
-        System.out.println(solve());
+        int res = solve();
+        bw.write(String.valueOf(res));
+        bw.newLine();
+        bw.flush();
+        bw.close();
     }
 }
