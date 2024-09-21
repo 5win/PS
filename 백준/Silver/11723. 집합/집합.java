@@ -42,7 +42,8 @@ public class Main {
                     set.add(num);
                 }
             } else if(op.equals("all")) {
-                set = IntStream.rangeClosed(1, 20).boxed().collect(Collectors.toSet());
+                set.clear();
+                IntStream.rangeClosed(1, 20).forEach(v -> set.add(v));
             } else {
                 set.clear();
             }
