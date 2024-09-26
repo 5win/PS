@@ -16,17 +16,18 @@ public class Main {
 
         String s = br.readLine();
 
+        StringBuilder sb = new StringBuilder(s);
+
         int cnt = 0;
-        boolean[] ate = new boolean[20001];
-        for(int i = 0; i < s.length(); i++) {
-            if(s.charAt(i) == 'H') continue;
+        for(int i = 0; i < n; i++) {
+            if(sb.charAt(i) != 'P') continue;
 
             int start = Math.max(i - k, 0);
-            int end = Math.min(i + k, s.length() - 1);
+            int end = Math.min(i + k, n - 1);
             for(int j = start; j <= end; j++) {
-                if(s.charAt(j) == 'H' && !ate[j]) {
+                if(sb.charAt(j) == 'H') {
                     cnt++;
-                    ate[j] = true;
+                    sb.setCharAt(j, 'X');
                     break;
                 }
             }
