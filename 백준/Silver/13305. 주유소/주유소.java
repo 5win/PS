@@ -19,7 +19,7 @@ public class Main {
         for(int i = 0; i < n; i++)
             cost[i] = sc.nextInt();
 
-        int minCost = cost[0];
+        long minCost = cost[0];
         long costSum = len[0] * minCost;
         for(int i = 1; i < n - 1; i++) {
             minCost = Math.min(minCost, cost[i]);
