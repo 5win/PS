@@ -7,7 +7,7 @@ import java.io.*;
 public class Main {
 
     static int n, m;
-    static Map<String, Boolean> map = new HashMap<>();
+    static Set<String> set = new HashSet<>();
 
     public static void main(String[] args) throws Exception {
 
@@ -20,17 +20,17 @@ public class Main {
 
         for(int i = 0; i < n; i++) {
             String keyword = br.readLine();
-            map.put(keyword, true);
+            set.add(keyword);
         }
 
         for(int i = 0; i < m; i++) {
             input = br.readLine().split(",");
             for(int j = 0; j < input.length; j++) {
-                if(map.containsKey(input[j])) {
-                    map.remove(input[j]);
+                if(set.contains(input[j])) {
+                    set.remove(input[j]);
                 }
             }
-            bw.write(String.valueOf(map.size()) + "\n");
+            bw.write(String.valueOf(set.size()) + "\n");
         }
 
         bw.flush();
