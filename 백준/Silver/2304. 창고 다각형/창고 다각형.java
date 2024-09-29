@@ -25,41 +25,32 @@ public class Main {
 
         int n = sc.nextInt();
 
-        List<Pair> list = new ArrayList<>();
+        int[] X = new int[1001];
+        int maxH = 0;
+        int maxidx = 0;
         for(int i = 0; i < n; i++) {
             int x = sc.nextInt();
             int y = sc.nextInt();
-            list.add(new Pair(x, y));
-        }
-        Collections.sort(list);
-
-        List<Pair> left = new ArrayList<>();
-        List<Pair> right = new ArrayList<>();
-
-        left.add(list.get(0));
-        for(int i = 1; i < n; i++) {
-            if(left.get(left.size() - 1).y < list.get(i).y) {
-                left.add(list.get(i));
+            if(maxH < y) {
+                maxH = y;
+                maxidx = x;
             }
-        }
-
-        right.add(list.get(n - 1));
-        for(int i = n - 2; i >= 0; i--) {
-            if(right.get(right.size() - 1).y < list.get(i).y) {
-                right.add(list.get(i));
-            }
+            X[x] = y;
         }
 
         int sum = 0;
-        for(int i = 0; i < left.size() - 1; i++) {
-            sum += (left.get(i + 1).x - left.get(i).x) * left.get(i).y;
+        int curH = 0;
+        for(int i = 0; i < maxidx; i++) {
+            curH = Math.max(curH, X[i]);
+            sum += curH;
         }
 
-        for(int i = 0; i < right.size() - 1; i++) {
-            sum += (right.get(i).x - right.get(i + 1).x) * right.get(i).y;
+        curH = 0;
+        for(int i = 1000; i >= maxidx; i--) {
+            curH = Math.max(curH, X[i]);
+            sum += curH;
         }
 
-        sum += (right.get(right.size() - 1).x + 1 - left.get(left.size() - 1).x) * left.get(left.size() - 1).y;
         System.out.println(sum);
     }
 }
