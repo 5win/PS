@@ -6,31 +6,36 @@ import java.io.*;
 
 public class Main {
 
-    static int n, m, p;
-    static int[] rank = new int[51];
+    public static void main(String[] args) throws Exception {
 
-    static int solve() {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        int ranking = 1;
-        int idx = 0;
+        String[] input = br.readLine().split(" ");
+        int n = Integer.parseInt(input[0]);
+        int score = Integer.parseInt(input[1]);
+        int p = Integer.parseInt(input[2]);
+
+        if(n > 0)
+            input = br.readLine().split(" ");
+        int[] arr = new int[n + 1];
         for(int i = 0; i < n; i++) {
-            if(rank[i] > m) ranking++;
-            if(rank[i] >= m) idx++;
+            arr[i] = Integer.parseInt(input[i]);
         }
-        if(ranking > p) return -1;
-        else if(idx >= p) return -1;
-        return ranking;
-    }
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-
-        n = sc.nextInt();
-        m = sc.nextInt();
-        p = sc.nextInt();
+        int bigCnt = 1;
+        int idx = 1;
         for(int i = 0; i < n; i++) {
-            rank[i] = sc.nextInt();
+            if(arr[i] > score) bigCnt++;
+            if(arr[i] >= score) idx++;
         }
-        System.out.println(solve());
+
+        if(idx > p)
+            bw.write("-1\n");
+        else
+            bw.write(String.valueOf(bigCnt));
+
+        bw.flush();
+        bw.close();
     }
 }
