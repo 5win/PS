@@ -19,17 +19,16 @@ public class Main {
             arr[i] = sc.nextInt();
 
         int res = 0;
-        int len = 0;
-        int idx = 0;
         int s = 0, e = 0;
         while(s < n && e < n) {
-            cnt[arr[e]]++;
-            while(cnt[arr[e]] > k) {
+            if(cnt[arr[e]] < k) {
+                cnt[arr[e]]++;
+                e++;
+                res = Math.max(res, e - s);
+            } else {
                 cnt[arr[s]]--;
                 s++;
             }
-            e++;
-            res = Math.max(res, e - s);
         }
         System.out.println(res);
     }
