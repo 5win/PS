@@ -20,18 +20,30 @@ public class Main {
             arr[i] = sc.nextInt();
         }
 
-        int maxCnt = 0;
-        for(int i = 0; i < n; i++) {
-            boolean[] visited = new boolean[30001];
-            int cnt = 0;
-            for(int j = 0; j < k; j++) {
-                int num = arr[(i + j) % n];
-                if(visited[num] || num == c) continue;
-                visited[num] = true;
-                cnt++;
+        int s = 0, e = 0;
+        int kind = 0;
+        int[] cnt = new int[30001]; 
+        for(int i = 0; i < k; i++) {
+            if(arr[i] != c) {
+                cnt[arr[i]]++;
+                if(cnt[arr[i]] == 1) kind++;
             }
-            maxCnt = Math.max(maxCnt, cnt);
+            e++;
         }
-        System.out.println(maxCnt + 1);
+        int res = kind;
+        for(int i = 0; i < n; i++) {
+            if(arr[e] != c) {
+                cnt[arr[e]]++;
+                if(cnt[arr[e]] == 1) kind++;
+            }
+            if(arr[s] != c) {
+                cnt[arr[s]]--;
+                if(cnt[arr[s]] == 0) kind--;
+            }
+            e = (e + 1) % n;
+            s = (s + 1) % n;
+            res = Math.max(res, kind);
+        }
+        System.out.println(res + 1);
     }
 }
