@@ -13,32 +13,7 @@ public class Main {
         while(T-- > 0) {
             String str = sc.next();
             int k = sc.nextInt();
-
-            int[] cnt = new int[27];
             int len = str.length();
-
-            int res1 = Integer.MAX_VALUE;
-
-            int s = 0, e = 0;
-            while(s < len && e < len) {
-                char here = str.charAt(e);
-                cnt[here - 'a']++;
-                e++;
-                if(cnt[here - 'a'] == k) {
-                    while(cnt[here - 'a'] == k && s < len) {
-                        cnt[str.charAt(s) - 'a']--;
-                        s++;
-                    }
-                    res1 = Math.min(res1, e - s + 1);
-                }
-            }
-            if(res1 == Integer.MAX_VALUE) {
-                System.out.println(-1);
-                continue;
-            }
-            else {
-                System.out.print(res1 + " ");
-            }
 
             List<Integer>[] idx = new List[26];
             for(int i = 0; i < 26; i++)
@@ -49,14 +24,19 @@ public class Main {
                 idx[here - 'a'].add(i);
             }
 
-            int res2 = 0;
+            int min = Integer.MAX_VALUE; 
+            int max = 0;
             for(int i = 0; i < 26; i++) {
                 for(int j = 0; j < idx[i].size() - k + 1; j++) {
-                    res2 = Math.max(res2, idx[i].get(j + k - 1) - idx[i].get(j) + 1);
+                    min = Math.min(min, idx[i].get(j + k - 1) - idx[i].get(j) + 1);
+                    max = Math.max(max, idx[i].get(j + k - 1) - idx[i].get(j) + 1);
                 }
             }
-            System.out.println(res2); 
+            if(min == Integer.MAX_VALUE) {
+                System.out.println(-1);
+            } else {
+                System.out.println(min + " " + max);
+            }
         }
-
     }
 }
