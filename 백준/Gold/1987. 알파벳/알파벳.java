@@ -8,7 +8,6 @@ public class Main {
 
     static int r, c;
     static String[] board = new String[21];
-    static boolean[][] visited = new boolean[21][21];
     static boolean[] alpha = new boolean[26];
     static int[] dy = {0, 1, 0, -1};
     static int[] dx = {1, 0, -1, 0};
@@ -22,11 +21,9 @@ public class Main {
 
         for(int dir = 0; dir < 4; dir++) {
             int ny = y + dy[dir], nx = x + dx[dir];
-            if(!inRange(ny, nx) || visited[ny][nx] || alpha[board[ny].charAt(nx) - 'A']) continue;
+            if(!inRange(ny, nx) || alpha[board[ny].charAt(nx) - 'A']) continue;
             alpha[board[ny].charAt(nx) - 'A'] = true;
-            visited[ny][nx] = true;
             dfs(ny, nx, len + 1);
-            visited[ny][nx] = false;
             alpha[board[ny].charAt(nx) - 'A'] = false;
         }
         res = Math.max(res, len);
@@ -43,7 +40,6 @@ public class Main {
             board[i] = br.readLine();
 
         alpha[board[0].charAt(0) - 'A'] = true;
-        visited[0][0] = true;
         dfs(0, 0, 1);
         bw.write(String.valueOf(res));
 
