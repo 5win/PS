@@ -6,37 +6,47 @@ import java.io.*;
 
 public class Main {
 
+    static int k;
+    static String str;
+
     public static void main(String[] args) throws Exception {
-        Scanner sc = new Scanner(System.in);
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        int T = sc.nextInt();
+        int T = Integer.parseInt(br.readLine());
         while(T-- > 0) {
-            String str = sc.next();
-            int k = sc.nextInt();
+            str = br.readLine();
+            k = Integer.parseInt(br.readLine());
+
+            int min = Integer.MAX_VALUE, max = 0;
+            int[] cnt = new int[30];
+            char[] arr = str.toCharArray();
+            for(char c : arr) cnt[c - 'a']++;
+
             int len = str.length();
-
-            List<Integer>[] idx = new List[26];
-            for(int i = 0; i < 26; i++)
-                idx[i] = new ArrayList<>();
-
             for(int i = 0; i < len; i++) {
-                char here = str.charAt(i);
-                idx[here - 'a'].add(i);
+                if(cnt[arr[i] - 'a'] >= k) {
+                    int kCnt = 0;
+                    for(int j = i; j < len; j++) {
+                        if(arr[i] == arr[j]) kCnt++;
+                        if(kCnt == k) {
+                            min = Math.min(min, j - i + 1);
+                            max = Math.max(max, j - i + 1);
+                            break;
+                        }
+                    }
+                }
+                cnt[arr[i] - 'a']--;
             }
 
-            int min = Integer.MAX_VALUE; 
-            int max = 0;
-            for(int i = 0; i < 26; i++) {
-                for(int j = 0; j < idx[i].size() - k + 1; j++) {
-                    min = Math.min(min, idx[i].get(j + k - 1) - idx[i].get(j) + 1);
-                    max = Math.max(max, idx[i].get(j + k - 1) - idx[i].get(j) + 1);
-                }
-            }
-            if(min == Integer.MAX_VALUE) {
-                System.out.println(-1);
-            } else {
-                System.out.println(min + " " + max);
-            }
+            if(min == Integer.MAX_VALUE)
+                bw.write("-1\n");
+            else 
+                bw.write(String.valueOf(min) + " " + String.valueOf(max) + "\n");
+
         }
+
+        bw.flush();
+        bw.close();
     }
 }
