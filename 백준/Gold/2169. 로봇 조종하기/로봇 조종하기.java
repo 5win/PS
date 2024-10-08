@@ -12,6 +12,7 @@ public class Main {
     static boolean[][] visited;
     static int[] dy = {0, 1, 0};
     static int[] dx = {1, 0, -1};
+    static final int INF = 987654321;
 
     static boolean inRange(int y, int x) {
         return 0 <= y && y < n && 0 <= x && x < m;
@@ -22,20 +23,20 @@ public class Main {
             return board[y][x];
         }
 
-        if(dp[y][x][prevDir] != Integer.MIN_VALUE)
+        if(dp[y][x][prevDir] != -INF)
             return dp[y][x][prevDir];
 
-        int ret = Integer.MIN_VALUE;
+        int ret = -INF;
         for(int dir = 0; dir < 3; dir++) {
             int ny = y + dy[dir], nx = x + dx[dir];
             if(!inRange(ny, nx) || visited[ny][nx]) continue;
             visited[ny][nx] = true;
-            ret = Math.max(ret, dfs(ny, nx, dir));
+            ret = Math.max(ret, dfs(ny, nx, dir) + board[y][x]);
             visited[ny][nx] = false;
         }
-        if(ret == Integer.MIN_VALUE)
-            return Integer.MIN_VALUE;
-        return dp[y][x][prevDir] = ret + board[y][x];
+        // if(ret == Integer.MIN_VALUE)
+        //     return Integer.MIN_VALUE;
+        return dp[y][x][prevDir] = ret;
     }
 
     public static void main(String[] args) throws Exception {
@@ -59,7 +60,7 @@ public class Main {
 
         for(int i = 0; i < n; i++)
             for(int j = 0; j < m; j++)
-                Arrays.fill(dp[i][j], Integer.MIN_VALUE);
+                Arrays.fill(dp[i][j], -INF);
 
         visited[0][0] = true;
         int res = dfs(0, 0, 0);
