@@ -9,18 +9,9 @@ public class Main {
     static class Pair implements Comparable<Pair> {
         int fir;
         long sec;
-        int third, prevW;
-        public Pair(int a, long b, int w) {
+        public Pair(int a, long b) {
             fir = a;
             sec = b;
-            prevW = w;
-        }
-
-        public Pair(int a, long b, int c, int w) {
-            fir = a;
-            sec = b;
-            third = c;
-            prevW = w;
         }
 
         @Override
@@ -33,12 +24,11 @@ public class Main {
     static int n, m, A, B;
     static long C;
     static List<Pair>[] adj;
-    static int[] w1, w2;
 
-    static long[] dijkstra() {
+    static long[] dijkstra(int limit) {
         PriorityQueue<Pair> pq = new PriorityQueue<>();
         long[] dist = new long[n + 1];
-        pq.offer(new Pair(A, 0, 0));
+        pq.offer(new Pair(A, 0));
         Arrays.fill(dist, INF);
         dist[A] = 0;
 
@@ -46,50 +36,33 @@ public class Main {
             Pair cNode = pq.poll();
             int here = cNode.fir;
             long cost = cNode.sec;
-            int prevW = cNode.prevW;
 
             if(dist[here] < cost) continue;
             for(Pair i : adj[here]) {
                 int next = i.fir;
                 long nextCost = cost + i.sec;
-                if(dist[next] <= nextCost) continue;
+                if(dist[next] <= nextCost || i.sec > limit) continue;
 
-                int maxW = Math.max(prevW, i.prevW);
                 dist[next] = nextCost;
-                w1[next] = maxW;
-                pq.offer(new Pair(next, nextCost, maxW));
+                pq.offer(new Pair(next, nextCost));
             }
         }
         return dist;
     }
 
-    static long[] mst() {
-        Comparator<Pair> cmp = (a, b) -> a.third - b.third;
-        PriorityQueue<Pair> pq = new PriorityQueue<>(cmp);
-        long[] dist = new long[n + 1];
-        Arrays.fill(dist, INF);
-        pq.offer(new Pair(A, 0, 0));
-        // dist[A] = 0;
+    static int binarySearch() {
+        int s = 0, e = (int) 1e9;
 
-        while(!pq.isEmpty()) {
-            Pair cNode = pq.poll();
-            int here = cNode.fir;
-            long cost = cNode.sec;
-            int weight = cNode.third;
-            
-            if(dist[here] != INF) continue;
-            dist[here] = cost;
-            w2[here] = Math.max(weight, cNode.prevW);
-
-            for(Pair i : adj[here]) {
-                int next = i.fir;
-                long nc = cost + i.sec;
-                int w = i.third;
-                if(dist[next] != INF) continue;
-                pq.offer(new Pair(next, nc, w, i.prevW));
+        while(s + 1 < e) {
+            int mid = (s + e) / 2;
+            long[] d = dijkstra(mid);
+            if(d[B] <= C) {
+                e = mid;
+            } else {
+                s = mid;
             }
         }
-        return dist;
+        return e;
     }
 
     public static void main(String[] args) throws Exception {
@@ -112,19 +85,13 @@ public class Main {
             int src = Integer.parseInt(input[0]);
             int dst = Integer.parseInt(input[1]);
             int cost = Integer.parseInt(input[2]);
-            adj[src].add(new Pair(dst, cost, cost));
+            adj[src].add(new Pair(dst, cost));
         }
 
-        w1 = new int[n + 1];
-        w2 = new int[n + 1];
-        long[] d1 = dijkstra();
-        long[] d2 = mst();
+        int res = binarySearch();
 
-        if(d2[B] <= C) {
-            // bw.write(d2[B] + "\n");
-            bw.write(w2[B] + "\n");
-        } else if(d1[B] <= C) {
-            bw.write(w1[B] + "\n");
+        if(res != (int) 1e9) {
+            bw.write(res + "\n");
         } else {
             bw.write("-1\n");
         }
