@@ -42,6 +42,7 @@ public class Main {
                 int next = i.fir;
                 long nextCost = cost + i.sec;
                 if(dist[next] <= nextCost || i.sec > limit) continue;
+                if(nextCost > C) continue;
 
                 dist[next] = nextCost;
                 pq.offer(new Pair(next, nextCost));
@@ -86,6 +87,7 @@ public class Main {
             int dst = Integer.parseInt(input[1]);
             int cost = Integer.parseInt(input[2]);
             adj[src].add(new Pair(dst, cost));
+            adj[dst].add(new Pair(src, cost));
         }
 
         int res = binarySearch();
