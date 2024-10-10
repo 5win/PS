@@ -52,7 +52,7 @@ public class Main {
     }
 
     static int binarySearch() {
-        int s = 0, e = (int) 1e9;
+        int s = 0, e = (int) 1e9 + 1;
 
         while(s + 1 < e) {
             int mid = (s + e) / 2;
@@ -92,7 +92,7 @@ public class Main {
 
         int res = binarySearch();
 
-        if(res != (int) 1e9) {
+        if(res != (int) 1e9 + 1) {
             bw.write(res + "\n");
         } else {
             bw.write("-1\n");
