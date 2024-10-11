@@ -62,8 +62,8 @@ public class Main {
             int n2 = Integer.parseInt(input[1]);
             int cost = Integer.parseInt(input[2]);
             n1--; n2--;
-            adj[n1][n2] = Math.min(adj[n1][n2], cost);
-            adj[n2][n1] = Math.min(adj[n2][n1], cost);
+            adj[n1][n2] = cost;
+            adj[n2][n1] = cost;
         }
 
         floyd();
