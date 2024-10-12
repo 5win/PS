@@ -1,32 +1,55 @@
 class Solution {
+    
+    int n, cap;
+    int[] psum1, psum2;
+    int[] deli, pick;
+    
+    void calcPsum() {
+        psum1[n - 1] = deli[n - 1];
+        psum2[n - 1] = pick[n - 1];
+       	for(int i = n - 2; i >= 0; i--) {
+            psum1[i] += psum1[i + 1] + deli[i];
+            psum2[i] += psum2[i + 1] + pick[i];
+        }
+    }
+    
+    long solve() {
+        
+        long ret = 0;
+        int deliSum = 0, pickSum = 0;
+        int end = n;
+        int i = n - 1;
+       	while(i >=0 && psum1[i] == 0 && psum2[i] == 0) {
+            end--;
+            i--; 
+        }
+        
+        while(i >= 0) {
+           	if(psum1[i] - deliSum <= cap && psum2[i] - pickSum <= cap) {
+                i--;
+                continue;
+            }
+           	deliSum += cap;
+            pickSum += cap;
+            ret += end * 2;
+            end = i + 1;
+        }
+        ret += end * 2;
+        return ret;
+    }
+        
     public long solution(int cap, int n, int[] deliveries, int[] pickups) {
         long answer = -1;
+        this.n = n;
+        this.cap = cap;
+       	psum1 = new int[n]; 
+       	psum2 = new int[n]; 
+        deli = deliveries;
+        pick = pickups;
+       	 
+        calcPsum();
+        answer = solve();
         
-        int[][] box = new int[100001][2];
-        box[n - 1][0] = deliveries[n - 1];
-        box[n - 1][1] = pickups[n - 1];
-       	for(int i = n - 2; i >= 0; i--) {
-           	box[i][0] = box[i + 1][0] + deliveries[i];
-           	box[i][1] = box[i + 1][1] + pickups[i];
-        } 
-        
-        long dist = 0;
-        int cnt = 0;
-        int s = n, e = n - 1;
-       	
-        while(0 < s && box[s - 1][0] == 0 && box[s - 1][1] == 0) s--;
-        
-        while(0 <= s && 0 <= e) {
-            if(box[e][0] - cnt <= cap && box[e][1] - cnt <= cap) {
-                e--;
-            } else {
-               	dist += 2 * s; 
-                s = e + 1;
-                cnt += cap;
-            }
-        }
-        dist += 2 * s;
-        
-        return answer = dist;
+        return answer;
     }
 }
