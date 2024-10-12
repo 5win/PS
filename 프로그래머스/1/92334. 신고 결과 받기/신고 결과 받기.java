@@ -2,43 +2,38 @@ import java.util.*;
 
 class Solution {
     
-   	Map<String, Integer> id = new HashMap<>();
-    int[] reported;
-    Set<Integer>[] reporter;
+    Set<String> reportLog = new HashSet<>();
+    Map<String, Integer> reportCnt = new HashMap<>();
+    Map<String, Integer> mail = new HashMap<>();
+    Map<String, List<String>> rMap = new HashMap<>();
+    
     
     public int[] solution(String[] id_list, String[] report, int k) {
-        int[] answer = {};
         
-        int idx = 0;
-       	for(int i = 0; i < id_list.length; i++) {
-            if(id.containsKey(id_list[i])) continue;
-            id.put(id_list[i], idx++);
+		for(String s : report)
+            reportLog.add(s);
+        
+        for(String rep : reportLog) {
+            String[] tmp = rep.split(" ");
+            String src = tmp[0], dst = tmp[1];
+           	reportCnt.put(dst, reportCnt.getOrDefault(dst, 0) + 1); 
+            List<String> sender = rMap.getOrDefault(dst, new ArrayList<>());
+            sender.add(src);
+            rMap.put(dst, sender);
+        }
+        
+       	for(Map.Entry<String, Integer> e : reportCnt.entrySet()) {
+           	if(e.getValue() >= k) {
+                List<String> list = rMap.get(e.getKey());
+                for(String recv : list) 
+                	mail.put(recv, mail.getOrDefault(recv, 0) + 1);
+            }
         } 
         
-        reported = new int[idx];
-        reporter = new HashSet[idx];
-        for(int i = 0; i < idx; i++) {
-            reporter[i] = new HashSet<>();
+        int[] answer = new int[id_list.length];
+        for(int i = 0; i < id_list.length; i++) {
+            answer[i] = mail.getOrDefault(id_list[i], 0);
         }
-        
-        for(String str : report) {
-           	String[] input = str.split(" ");
-            int id1 = id.get(input[0]);
-            int id2 = id.get(input[1]);
-            if(reporter[id2].contains(id1)) continue;
-           	reported[id2]++;
-            reporter[id2].add(id1);
-        }
-        
-        int[] cnt = new int[idx];
-        for(int i = 0; i < reported.length; i++) {
-            if(reported[i] >= k) {
-                for(int j : reporter[i]) {
-                    cnt[j]++;
-                }
-            }
-        }
-        
-        return answer = cnt;
+        return answer;
     }
 }
