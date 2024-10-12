@@ -6,39 +6,23 @@ import java.io.*;
 
 public class Main {
 
+    static class Pair implements Comparable<Pair> {
+        int fir, sec;
+        public Pair(int a, int b) {
+            fir = a;
+            sec = b;
+        }
+        public int compareTo(Pair o) {
+            if(fir == o.fir) return sec - o.sec;
+            return fir - o.fir;
+        }
+    }
+
     static int n, m, a, b;
-    static int[][][] dp;
     static int[][] board;
 
     static boolean inRange(int y, int x) {
         return 0 <= y && y < n && 0 <= x && x < m;
-    }
-
-    static int dfs(int remain, int y, int x) {
-
-        if(y == n - 1 && x == m - 1) {
-            if(remain == 0) return 1;
-            return 0;
-        }
-
-        if(dp[remain][y][x] != -1)
-            return dp[remain][y][x];
-
-        int ret = 0;
-        if(inRange(y + 1, x) && board[y + 1][x] != 2) {
-            if(board[y + 1][x] == 1)
-                ret += dfs(remain - 1, y + 1, x);
-            else
-                ret += dfs(remain, y + 1, x);
-        }
-        if(inRange(y, x + 1) && board[y][x + 1] != 2) {
-            if(board[y][x + 1] == 1)
-                ret += dfs(remain - 1, y, x + 1);
-            else
-                ret += dfs(remain, y, x + 1);
-        }
-
-        return dp[remain][y][x] = ret;
     }
 
     public static void main(String[] args) throws Exception {
@@ -52,12 +36,9 @@ public class Main {
         b = Integer.parseInt(input[3]);
 
         board = new int[n][m];
-        dp = new int[a + 1][n][m];
-        for(int i = 0; i <  a + 1; i++) {
-            for(int j = 0; j < n; j++)
-                Arrays.fill(dp[i][j], -1);
-        }
 
+        List<Pair> list = new ArrayList<>();
+        list.add(new Pair(0, 0));
 
         for(int i = 0; i < a; i++) {
             input = br.readLine().split(" ");
@@ -65,7 +46,9 @@ public class Main {
             int x = Integer.parseInt(input[1]);
             y--; x--;
             board[y][x] = 1;
+            list.add(new Pair(y, x));
         }
+        list.add(new Pair(n - 1, m - 1));
 
         for(int i = 0; i < b; i++) {
             input = br.readLine().split(" ");
@@ -75,8 +58,33 @@ public class Main {
             board[y][x] = 2;
         }
 
-        int res = dfs(a, 0, 0);
-        bw.write(res + "\n");
+        Collections.sort(list);
+
+        // dp
+        int[][] dp = new int[n][m];
+        dp[0][0] = 1;
+        for(int i = 0; i < a + 1; i++) {
+            int y1 = list.get(i).fir;
+            int x1 = list.get(i).sec;
+            int y2 = list.get(i + 1).fir;
+            int x2 = list.get(i + 1).sec;
+
+            if(y1 != 0 || x1 != 0) dp[y1][x1] = 0;
+
+            for(int r = y1; r <= y2; r++) {
+                for(int c = x1; c <= x2; c++) {
+                    if(board[r][c] == 2) continue;
+                    if(inRange(r - 1, c) && board[r - 1][c] != 2) {
+                        dp[r][c] += dp[r - 1][c];
+                    }
+                    if(inRange(r, c - 1) && board[r][c - 1] != 2) {
+                        dp[r][c] += dp[r][c - 1];
+                    }
+                }
+            }
+        }
+        bw.write(dp[n - 1][m - 1] + "\n");
+
 
         bw.flush();
         bw.close();
