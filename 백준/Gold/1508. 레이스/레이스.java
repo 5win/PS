@@ -10,16 +10,12 @@ public class Main {
     static List<Integer> arr = new ArrayList<>();
 
     static boolean decision(int x) {
+        int idx = 0;
         int cnt = 1;
-        int st = 0, en = 1;
-
-        while(en < arr.size()) {
-            while(en < arr.size() && arr.get(en - 1) - arr.get(st) < x) {
-                en++;
-            }
-            if(arr.get(en - 1) - arr.get(st) >= x) {
+        for(int i = 1; i < arr.size(); i++) {
+            if(arr.get(i) - arr.get(idx) >= x) {
                 cnt++;
-                st = en - 1;
+                idx = i;
             }
         }
         return cnt >= m;
