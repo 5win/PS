@@ -11,7 +11,7 @@ public class Main {
 
     static boolean check(int l, int mid, int r) {
         int left = mid - 1, right = mid + 1;
-        while(l <= left && right <= r) {
+        while(l <= left && right < r) {
             if(str.charAt(left) == str.charAt(right)) return false;
             left--;
             right++;
@@ -24,9 +24,6 @@ public class Main {
         if(l >= r) return true;
 
         int mid = (l + r) / 2;
-        String left = str.substring(l, mid);
-        String right = str.substring(mid + 1, r + 1);
-
         if(!check(l, mid, r)) return false;
 
         boolean ret = true;
@@ -42,7 +39,7 @@ public class Main {
         t = Integer.parseInt(br.readLine());
         while(t-- > 0) {
             str = br.readLine();
-            if(solve(0, str.length() - 1))
+            if(solve(0, str.length()))
                 bw.write("YES\n");
             else
                 bw.write("NO\n");
