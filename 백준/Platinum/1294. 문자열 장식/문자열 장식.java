@@ -26,11 +26,10 @@ public class Main {
 
         while(!pq.isEmpty()) {
             String here = pq.poll();
-            
             sb.append(here.charAt(0));
 
-            if(here.length() == 1) continue;
             String next = here.substring(1);
+            if(next.isBlank()) continue;
             pq.offer(next);
         }
 
