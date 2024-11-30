@@ -9,8 +9,8 @@ public class Main {
     static int n;
     static List<Integer> arr = new ArrayList<>();
 
-    static int solve() {
-        int ret1 = 0, ret2 = 0;
+    static long solve() {
+        long ret1 = 0, ret2 = 0;
         int evenCnt = 0, oddCnt = 0;
         for(int i = 0; i < n; i++) {
             if(arr.get(i) % 2 != 0) {
