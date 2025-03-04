@@ -1,13 +1,13 @@
 class Solution {
     
-    int[] cnt = new int[5000001];
     public int[] solution(int e, int[] starts) {
         
         // counting
-        for(int i = 1; i <= 5000000; i++) {
-            for(int j = 1; j <= 5000000; j++) {
+    	int[] cnt = new int[e + 1];
+        for(int i = 1; i <= e; i++) {
+            for(int j = 1; j <= e; j++) {
                 int cur = i * j;
-                if(cur > 5000000) break;
+                if(cur > e) break;
                 cnt[cur]++;
             }
         }
