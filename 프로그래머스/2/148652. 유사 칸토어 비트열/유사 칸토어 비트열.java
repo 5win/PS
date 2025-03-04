@@ -1,7 +1,6 @@
 class Solution {
     
-    String one = "11011";
-    String zero = "00000";
+    final String ONE = "11011";
     
     long l, r;
     int cnt = 0;
@@ -9,23 +8,14 @@ class Solution {
     boolean finish = false;
     
     public void dfs(int n, int prev, long p) {
-        if(finish) {
-            return;
-        }
+        if(finish) return;		// r까지 카운팅을 했으면, 무조건 return
         
         if(n == 0) {
-            if(p == r) {
-                finish = true;
-            }
-            
-            if(p == l) {
-				start = true; 
-            }
+            if(p == l) start = true; 
+            if(p == r) finish = true;
             
             if(start) {
-                //System.out.println(prev + ", " + p);
                 cnt = prev == 0 ? cnt : cnt + 1;
-                return;
             }
             return;
         }
@@ -33,29 +23,24 @@ class Solution {
         long perCnt = (long) Math.pow(5, n - 1);
         for(int i = 0; i < 5; i++) {
             long curP = p + perCnt * i;
-            //System.out.println(curP);
-            if(curP + perCnt <= l) {
-                continue;
+            long nextP = p + perCnt * (i + 1);
+            if(nextP <= l) continue;	// 다음 브랜치가 l 존재 가능 범위이면, 현재 브랜치 skip
+            
+            if(prev == 1) {
+                dfs(n - 1, ONE.charAt(i) - '0', curP);
             } else {
-                if(prev == 1) {
-                    //int nextNum = i == 0 ? 1 : one.charAt(i - 1) - '0';
-                    //long nextP = i == 0 ? curP : curP - perCnt;
-                	dfs(n - 1, one.charAt(i) - '0', curP);
-                	//dfs(n - 1, nextNum, nextP);
-                } else {
-                   	dfs(n - 1, 0, curP); 
-                }
+                dfs(n - 1, 0, curP); 	// 이전 숫자가 0이면, 무조건 0
             }
         }
     }
     
     public int solution(int n, long l, long r) {
-        l--; r--;
+        //l--; r--;	// 
         
         this.l = l;
         this.r = r;
         
-        dfs(n, 1, 0);
+        dfs(n, 1, 1);
         
         return cnt;
     }
