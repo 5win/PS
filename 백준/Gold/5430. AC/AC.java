@@ -10,18 +10,13 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        // Scanner sc = new Scanner(System.in);
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        // BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         Deque<Integer> dq = new ArrayDeque<>();
 
-        // int t = sc.nextInt();
         int t = Integer.parseInt(br.readLine());
         while(t-- > 0) {
-            // String p = sc.next();
-            // int n = sc.nextInt();
-            // String x = sc.next();
             String p = br.readLine();
             int n = Integer.parseInt(br.readLine());
             String x = br.readLine();
@@ -57,24 +52,23 @@ public class Main {
 
             // print
             if(isError) {
-                System.out.println("error");
-            } else if(dq.isEmpty()) {
-                System.out.println("[]");   
+                bw.write("error\n");
+            } else if(dq.isEmpty()) { 
+                bw.write("[]\n");
             } else if(isReverse) {
-                System.out.print("[");
+                bw.write("[");
                 while(dq.size() != 1) {
-                    System.out.print(dq.pollLast());
-                    System.out.print(",");
+                    bw.write(dq.pollLast() + ",");
                 }
-                System.out.println(dq.pollLast() + "]");
+                bw.write(dq.pollLast() + "]\n");
             } else {
-                System.out.print("[");
+                bw.write("[");
                 while(dq.size() != 1) {
-                    System.out.print(dq.pollFirst());
-                    System.out.print(",");
+                    bw.write(dq.pollFirst() + ",");
                 }
-                System.out.println(dq.pollFirst() + "]");
+                bw.write(dq.pollFirst() + "]\n");
             }
+            bw.flush();
         }
 
     }
