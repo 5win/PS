@@ -1,55 +1,55 @@
 class Solution {
     
-    int n, cap;
-    int[] psum1, psum2;
-    int[] deli, pick;
+    int[] deliSum, pickSum;
     
-    void calcPsum() {
-        psum1[n - 1] = deli[n - 1];
-        psum2[n - 1] = pick[n - 1];
-       	for(int i = n - 2; i >= 0; i--) {
-            psum1[i] += psum1[i + 1] + deli[i];
-            psum2[i] += psum2[i + 1] + pick[i];
-        }
-    }
-    
-    long solve() {
-        
-        long ret = 0;
-        int deliSum = 0, pickSum = 0;
-        int end = n;
-        int i = n - 1;
-       	while(i >=0 && psum1[i] == 0 && psum2[i] == 0) {
-            end--;
-            i--; 
-        }
-        
-        while(i >= 0) {
-           	if(psum1[i] - deliSum <= cap && psum2[i] - pickSum <= cap) {
-                i--;
-                continue;
-            }
-           	deliSum += cap;
-            pickSum += cap;
-            ret += end * 2;
-            end = i + 1;
-        }
-        ret += end * 2;
-        return ret;
-    }
-        
     public long solution(int cap, int n, int[] deliveries, int[] pickups) {
-        long answer = -1;
-        this.n = n;
-        this.cap = cap;
-       	psum1 = new int[n]; 
-       	psum2 = new int[n]; 
-        deli = deliveries;
-        pick = pickups;
-       	 
-        calcPsum();
-        answer = solve();
         
-        return answer;
+        deliSum = new int[n + 1];
+        pickSum = new int[n + 1];
+        
+        // prefix sum
+        final int INF = 987654321;
+        deliSum[0] = INF;
+        pickSum[0] = INF;
+        deliSum[n] = deliveries[n - 1];
+        pickSum[n] = pickups[n - 1];
+        for(int i = n - 2; i >= 0; i--) {
+            deliSum[i + 1] = deliSum[i + 2] + deliveries[i];
+            pickSum[i + 1] = pickSum[i + 2] + pickups[i];
+        }
+        
+        // move
+        int loc = n;
+        for(int i = n; i > 0; i--) {
+            if(deliSum[i] > 0 || pickSum[i] > 0) {
+                loc = i;
+                break;
+            }
+        }
+        
+        int deliCnt = 0, pickCnt = 0;
+        long moved = 0;
+        for(int i = n; i > 0;) {
+        	int curDeli = deliSum[i] - deliCnt;
+            int curPick = pickSum[i] - pickCnt;
+            if(curDeli > cap || curPick > cap) {
+                //deliCnt += Math.min(curDeli, cap);
+                //pickCnt += Math.min(curPick, cap);
+                deliCnt += cap;
+                pickCnt += cap;
+                moved += loc * 2;
+                loc = i;
+                //System.out.println(moved);
+            } else {
+               	i--; 
+            }
+        }
+        if(deliCnt != deliSum[1] || pickCnt != pickSum[1]) {
+         	moved += loc * 2;
+       	//deliCnt += deliSum[1] - deliCnt;
+        //pickCnt += pickSum[1] - pickCnt;
+        }
+            
+       	return moved; 
     }
 }
