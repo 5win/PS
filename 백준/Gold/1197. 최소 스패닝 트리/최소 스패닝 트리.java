@@ -9,21 +9,6 @@ public class Main {
 
     static final int INF = 1987654321;
 
-    static int[] parent;
-
-    static int find(int u) {
-        if(parent[u] == u) return u;
-
-        return parent[u] = find(parent[u]);
-    }
-
-    static void merge(int u, int v) {
-        u = find(u);
-        v = find(v);
-
-        if(u == v) return;
-        parent[u] = v;
-    }
 
     public static void main(String[] args) throws Exception {
 
@@ -32,40 +17,48 @@ public class Main {
         int v = sc.nextInt();
         int e = sc.nextInt();
 
-        List<int[]> edges = new ArrayList<>();
+        List<int[]>[] adj = new ArrayList[v];
+        for(int i = 0; i < v; i++) {
+            adj[i] = new ArrayList<>();
+        }
+        
         for(int i = 0; i < e; i++) {
             int a = sc.nextInt() - 1;
             int b = sc.nextInt() - 1;
             int c = sc.nextInt();
 
-            edges.add(new int[]{a, b, c});
+            adj[a].add(new int[]{b, c});
+            adj[b].add(new int[]{a, c});
         }
 
-        // init union-find
-        parent = new int[v];
-        for(int i = 0; i < v; i++) {
-            parent[i] = i;
+
+        // prim
+        PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> a[1] - b[1]);
+        boolean[] visited = new boolean[v];
+
+        // init pq
+        visited[0] = true;
+        for(int[] next : adj[0]) {
+            pq.offer(next);
         }
 
-        // kruskal
-        boolean[] selected = new boolean[e];
-        Collections.sort(edges, (a, b) -> a[2] - b[2]);
+        int sum = 0;
+        while(!pq.isEmpty()) {
+            int[] here = pq.poll();
 
-        for(int i = 0; i < edges.size(); i++) {
-            int[] edge = edges.get(i);
-            int a = edge[0], b = edge[1];
-            if(find(a) == find(b)) continue;
+            int b = here[0];
+            int cost = here[1];
 
-            merge(a, b);
-            selected[i] = true;
-        }
+            if(visited[b]) continue;
+            visited[b] = true;
+            sum += cost;
 
-        int res = 0;
-        for(int i = 0; i < edges.size(); i++) {
-            if(selected[i]) {
-                res += edges.get(i)[2];
+            for(int[] next : adj[b]) {
+                if(visited[next[0]]) continue;
+                pq.offer(next);
             }
         }
-        System.out.println(res);
+
+        System.out.println(sum);
     }
 }
